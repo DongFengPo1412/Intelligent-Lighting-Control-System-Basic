@@ -4,10 +4,10 @@
 <div align="center">
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
-[![MCU: ASRPRO & STM32](https://img.shields.io/badge/MCU-ASRPRO%20AI%20Voice%20%7C%20STM32F103-red.svg?style=flat-square)](https://www.twen51.com/)
+[![MCU: ASRPRO AI Voice](https://img.shields.io/badge/MCU-ASRPRO%20AI%20Voice%20SoC-red.svg?style=flat-square)](https://www.twen51.com/)
 [![LED: WS2812B 16x16](https://img.shields.io/badge/Matrix-WS2812B%2016x16%20RGB-green.svg?style=flat-square)](https://www.world-semi.com/)
-[![Wireless: HM-10 BLE & ESP8266](https://img.shields.io/badge/Wireless-HM--10%20BLE%20%7C%20ESP8266-orange.svg?style=flat-square)](docs/)
-[![Platform: Tianwen Block & OneNET](https://img.shields.io/badge/Platform-Tianwen%20Block%20%7C%20OneNET-blueviolet.svg?style=flat-square)](src/)
+[![Wireless: HM-10 BLE](https://img.shields.io/badge/Wireless-HM--10%20BLE%204.0-orange.svg?style=flat-square)](docs/)
+[![Platform: Tianwen Block](https://img.shields.io/badge/Platform-Tianwen%20Block-blueviolet.svg?style=flat-square)](src/)
 [![Course: UESTC Comprehensive Project](https://img.shields.io/badge/UESTC-Comprehensive%20Curriculum%20Design-blueviolet.svg?style=flat-square)](https://www.uestc.edu.cn/)
 
 [**中文文档**](README.md) | [**English**](README_EN.md) | [**日本語**](README_JA.md)
@@ -26,7 +26,7 @@
 - **エッジオフラインAI音声中枢**：**ASRPRO 高性能オフライン音声認識SoC**（天問51アーキテクチャ / ニューラルプロセッサNPU）をコアに採用し、ハードウェア音響エコーキャンセル（AEC）とノイズ低減フィルタを内蔵。クラウド不要でミリ秒クラスの即時応答を実現（静音環境での認識率 $\ge 98\%$、一般的ノイズ環境で $90\%$ 以上）；
 - **高密度フルカラー光マトリクス**：4枚の $8 \times 8$ WS2812B 外部制御RGBモジュールを精密にカスケード接合し、**16×16 ドットマトリクス（合計256個の独立RGBピクセル）**を構成。単線式800kHz Non-Return-to-Zero（NZR）プロトコルにより、24ビットトゥルーカラー（1677万色）の滑らかな階調表現を実現；
 - **木製額縁ハードウェアと没入型インタラクション**：天然無垢材フレームとアクリル拡散板を独自設計・加工。高精度差動マイクと 8002A オーディオパワーアンプを内蔵し、エモーショナルな表情アニメーション（笑顔・泣き顔）、4象限レインボーグラデーション光、低消費電力Bluetooth（HM-10 BLE 4.0）無線リモコン、および対話型スネークゲームをサポート；
-- **デュアルスタック協調**：**STM32F103 + ESP8266 + OneNET IoT クラウド**に基づく環境光適応型閉ループ調光システムと下位互換性を保持し、「オフライン音響視覚インタラクション＋遠隔クラウド監視」を網羅する包括的技術スタックを構築。
+- **ハード・ソフト協調開発パイプライン**：天問Block（TWenBlock）によるビジュアルプログラミングとベアメタルNative C++ファームウェア開発のデュアルトラックをサポートし、高いモジュール性と堅牢性を確立。
 
 ---
 
@@ -224,7 +224,7 @@ $$
 | **無線通信モジュール** | HM-10 BLE 4.0 Bluetooth スレーブ | 2.4GHz ISM帯、見通し通信距離 $> 10\text{m}$、通信レイテンシ $< 50\text{ms}$ |
 | **外装構造** | 天然無垢材額縁＋アクリルパネル | 外形寸法 約 $150 \times 150 \times 40\text{ mm}$、3M熱伝導シートによる強固な固定 |
 | **電源システム** | DC 5V 外部安定化電源 | 逆接続保護回路内蔵、動作電流 $0.2\text{A} \sim 2.0\text{A}$（ファームウェア輝度制限保護） |
-| **IoT 協調拡張機能** | STM32F103 + ESP8266 + OneNET | 12ビットADC光検出、TIM3 PWM調光、スマホApp遠隔制御をサポート |
+| **開発環境とツールチェーン** | 天問Block (TWenBlock) / GCC | ビジュアルブロックプログラミングおよびネイティブC/C++ソースコードコンパイル、USB書き込み対応 |
 
 ---
 
@@ -238,30 +238,23 @@ Intelligent-Lighting-Control-System-Basic/
 │       ├── demo_led_matrix_smile_face.jpg          # 16x16 笑顔表情ハイコントラスト実写写真 (2448x3264)
 │       ├── demo_hardware_wood_case.jpg             # 4象限レインボーグラデーション額縁写真 (3048x4064)
 │       ├── demo_hardware_matrix_glow.jpg           # LED点灯および内部配線詳細写真
+│       ├── demo_hardware_internal_wiring.jpg       # マトリクス背面配線および絶縁工芸写真
 │       ├── hardware_asrpro_schematic.png           # ASRPRO 公式コア基板回路図 (MCU/MIC/SPK/AEC)
 │       ├── hardware_ws2812_cascade_schematic.png   # WS2812B カスケード接続・デカップリング回路図
 │       ├── hardware_asrpro_module.jpg              # ASRPRO ハードウェアモジュール外観写真
 │       ├── software_tianwen_block_voice_config.png # 天問Block 音声設定GUI画面キャプチャ
 │       ├── software_matrix_pattern_design.png      # 16x16 パターンビットマスク設計ツール
-│       ├── software_bluetooth_control_app.png      # Bluetooth スマホ操作アプリ画面
-│       ├── system_architecture.png                 # エンドツーエンドシステムトポロジ図
-│       ├── hardware_stm32.png                      # STM32F103C8T6 最小システム基板写真
-│       ├── hardware_esp8266.png                    # ESP8266 シリアル Wi-Fi モジュール写真
-│       ├── demo_android_app.png                    # Android 照明制御クライアント画面
-│       └── demo_onenet_cloud.png                   # OneNET IoT プラットフォーム画面
+│       └── software_bluetooth_control_app.png      # Bluetooth スマホ操作アプリ画面
 ├── src/
-│   ├── asrpro_firmware/
-│   │   ├── main_asrpro_ws2812.cpp                  # ASRPRO ネイティブC++ファームウェア (ASR割込+WS2812駆動)
-│   │   └── tianwen_block_projects/
-│   │       ├── 最终版本.hd                         # 天問Block 初級完全プロジェクトファイル
-│   │       ├── 贪吃蛇.hd                           # 16x16 マトリクス対話型スネークゲームプロジェクト
-│   │       ├── 蓝牙点灯.hd                         # HM-10 Bluetooth 通信制御プロジェクト
-│   │       ├── RGB.hd                              # フルカラーカラースペースグラデーションプロジェクト
-│   │       ├── 功能二.hd                           # モード2機能プロジェクト
-│   │       └── 功能三.hd                           # モード3機能プロジェクト
-│   └── stm32Project/                               # STM32+ESP8266+OneNET Keil プロジェクト
-│       ├── USER/                                   # メインループ、ADC計測、PWM調光、OneNET EDPスタック
-│       └── FWLIB/                                  # STM32F10x 公式標準ファームウェアライブラリ
+│   └── asrpro_firmware/
+│       ├── main_asrpro_ws2812.cpp                  # ASRPRO ネイティブC++ファームウェア (ASR割込+WS2812駆動)
+│       └── tianwen_block_projects/
+│           ├── 最终版本.hd                         # 天問Block 初級完全プロジェクトファイル
+│           ├── 贪吃蛇.hd                           # 16x16 マトリクス対話型スネークゲームプロジェクト
+│           ├── 蓝牙点灯.hd                         # HM-10 Bluetooth 通信制御プロジェクト
+│           ├── RGB.hd                              # フルカラーカラースペースグラデーションプロジェクト
+│           ├── 功能二.hd                           # モード2機能プロジェクト
+│           └── 功能三.hd                           # モード3機能プロジェクト
 ├── LICENSE                                         # MIT 公式オープンソースライセンス
 ├── README.md                                       # 中国語技術仕様書・数理モデル解説
 ├── README_EN.md                                    # 英語総合技術仕様書

@@ -4,10 +4,10 @@
 <div align="center">
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
-[![MCU: ASRPRO & STM32](https://img.shields.io/badge/MCU-ASRPRO%20AI%20Voice%20%7C%20STM32F103-red.svg?style=flat-square)](https://www.twen51.com/)
+[![MCU: ASRPRO AI Voice](https://img.shields.io/badge/MCU-ASRPRO%20AI%20Voice%20SoC-red.svg?style=flat-square)](https://www.twen51.com/)
 [![LED: WS2812B 16x16](https://img.shields.io/badge/Matrix-WS2812B%2016x16%20RGB-green.svg?style=flat-square)](https://www.world-semi.com/)
-[![Wireless: HM-10 BLE & ESP8266](https://img.shields.io/badge/Wireless-HM--10%20BLE%20%7C%20ESP8266-orange.svg?style=flat-square)](docs/)
-[![Platform: Tianwen Block & OneNET](https://img.shields.io/badge/Platform-Tianwen%20Block%20%7C%20OneNET-blueviolet.svg?style=flat-square)](src/)
+[![Wireless: HM-10 BLE](https://img.shields.io/badge/Wireless-HM--10%20BLE%204.0-orange.svg?style=flat-square)](docs/)
+[![Platform: Tianwen Block](https://img.shields.io/badge/Platform-Tianwen%20Block-blueviolet.svg?style=flat-square)](src/)
 [![Course: UESTC Comprehensive Project](https://img.shields.io/badge/UESTC-Comprehensive%20Curriculum%20Design-blueviolet.svg?style=flat-square)](https://www.uestc.edu.cn/)
 
 [**中文文档**](README.md) | [**English**](README_EN.md) | [**日本語**](README_JA.md)
@@ -26,7 +26,7 @@ To tackle these challenges, this project engineered a self-contained, highly int
 - **Edge Offline AI Voice Engine**: Centered on the **ASRPRO SoC** (Tianwen 51 architecture / Neural Processing Unit NPU), incorporating hardware Acoustic Echo Cancellation (AEC) and noise suppression. It executes sub-200ms spoken command parsing locally without Internet connectivity ($\ge 98\%$ recognition accuracy in quiet environments, $> 90\%$ in typical ambient noise);
 - **High-Density Full-Color Optical Matrix**: Four $8 \times 8$ WS2812B smart RGB modules are seamlessly cascaded into a **16×16 matrix (256 individual RGB pixels)**, rendering 24-bit true color (16.77 million colors) via single-line 800kHz Non-Return-to-Zero (NZR) pulses;
 - **Handcrafted Wooden Enclosure & Multi-Modal Interaction**: Integrated inside a natural solid-wood picture frame with an acrylic diffuser, supporting emotional facial animations (smiling greeting, weeping sorrow), 4-quadrant rainbow color flow, Bluetooth Low Energy (HM-10 BLE 4.0) wireless control, and an interactive Snake arcade game;
-- **Dual-Stack Evolution**: Fully backward-compatible with an **STM32F103 + ESP8266 + OneNET IoT Cloud** adaptive closed-loop ambient dimming pipeline, forming a comprehensive cross-platform lighting engineering suite.
+- **Hardware-Software Co-Design Pipeline**: Dual-track software architecture supporting both visual block-based programming via Tianwen Block (TWenBlock) and bare-metal Native C++ firmware development, ensuring high system modularity and robustness.
 
 ---
 
@@ -224,7 +224,7 @@ The codebase supports dual-track development: visual Tianwen Block (TWenBlock) g
 | **Wireless Connectivity** | HM-10 BLE 4.0 Bluetooth Slave | 2.4GHz ISM band, $> 10\text{m}$ line-of-sight range, end-to-end latency $< 50\text{ms}$ |
 | **Physical Enclosure** | Natural Solid Wood + Acrylic Panel | Dimensions $\approx 150 \times 150 \times 40\text{ mm}$, 3M thermal adhesive matrix mounting |
 | **Power Supply** | DC 5V External Regulated Supply | Reverse-polarity protected, operating current $0.2\text{A} \sim 2.0\text{A}$ (brightness clamped) |
-| **IoT Expansion Stack** | STM32F103 + ESP8266 + OneNET | 12-bit ADC photoresistor sensing, TIM3 PWM dimming, and Android mobile client |
+| **Toolchain & Software** | Tianwen Block (TWenBlock) / GCC | Block-based visual workflow and native C/C++ firmware compilation/flashing via USB |
 
 ---
 
@@ -238,30 +238,23 @@ Intelligent-Lighting-Control-System-Basic/
 │       ├── demo_led_matrix_smile_face.jpg          # High-contrast purple/white smile face capture (2448x3264)
 │       ├── demo_hardware_wood_case.jpg             # Four-quadrant rainbow flow ambient capture (3048x4064)
 │       ├── demo_hardware_matrix_glow.jpg           # LED matrix glow and internal wiring detail
+│       ├── demo_hardware_internal_wiring.jpg       # Matrix rear wiring and insulation craftsmanship
 │       ├── hardware_asrpro_schematic.png           # Complete official ASRPRO core board schematic
 │       ├── hardware_ws2812_cascade_schematic.png   # WS2812B single-wire cascade and decoupling schematic
 │       ├── hardware_asrpro_module.jpg              # ASRPRO hardware core module photograph
 │       ├── software_tianwen_block_voice_config.png # Tianwen Block voice command graphical setup screen
 │       ├── software_matrix_pattern_design.png      # 16x16 pixel glyph designer and bitmask generator
-│       ├── software_bluetooth_control_app.png      # Mobile Bluetooth control app interface
-│       ├── system_architecture.png                 # End-to-end cloud-edge system architecture diagram
-│       ├── hardware_stm32.png                      # STM32F103C8T6 minimum system board photo
-│       ├── hardware_esp8266.png                    # ESP8266 serial Wi-Fi module photo
-│       ├── demo_android_app.png                    # Android lighting remote control mobile client
-│       └── demo_onenet_cloud.png                   # OneNET IoT platform dashboard screenshot
+│       └── software_bluetooth_control_app.png      # Mobile Bluetooth control app interface
 ├── src/
-│   ├── asrpro_firmware/
-│   │   ├── main_asrpro_ws2812.cpp                  # ASRPRO native C++ firmware (ASR callbacks + WS2812 engine)
-│   │   └── tianwen_block_projects/
-│   │       ├── 最终版本.hd                         # Full Tianwen Block basic capstone project file
-│   │       ├── 贪吃蛇.hd                           # 16x16 matrix interactive Snake game project
-│   │       ├── 蓝牙点灯.hd                         # HM-10 Bluetooth wireless control project
-│   │       ├── RGB.hd                              # Full-color space smooth gradient algorithm project
-│   │       ├── 功能二.hd                           # Mode 2 function project
-│   │       └── 功能三.hd                           # Mode 3 function project
-│   └── stm32Project/                               # STM32+ESP8266+OneNET Keil uVision project
-│       ├── USER/                                   # Main loop, ADC sampling, PWM dimming, OneNET EDP stack
-│       └── FWLIB/                                  # STM32F10x standard firmware library
+│   └── asrpro_firmware/
+│       ├── main_asrpro_ws2812.cpp                  # ASRPRO native C++ firmware (ASR callbacks + WS2812 engine)
+│       └── tianwen_block_projects/
+│           ├── 最终版本.hd                         # Full Tianwen Block basic capstone project file
+│           ├── 贪吃蛇.hd                           # 16x16 matrix interactive Snake game project
+│           ├── 蓝牙点灯.hd                         # HM-10 Bluetooth wireless control project
+│           ├── RGB.hd                              # Full-color space smooth gradient algorithm project
+│           ├── 功能二.hd                           # Mode 2 function project
+│           └── 功能三.hd                           # Mode 3 function project
 ├── LICENSE                                         # MIT Official Open-Source License
 ├── README.md                                       # Chinese Technical Specification & Derivations
 ├── README_EN.md                                    # English Comprehensive Engineering Specification

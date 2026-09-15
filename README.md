@@ -4,10 +4,10 @@
 <div align="center">
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
-[![MCU: ASRPRO & STM32](https://img.shields.io/badge/MCU-ASRPRO%20AI%20Voice%20%7C%20STM32F103-red.svg?style=flat-square)](https://www.twen51.com/)
+[![MCU: ASRPRO AI Voice](https://img.shields.io/badge/MCU-ASRPRO%20AI%20Voice%20SoC-red.svg?style=flat-square)](https://www.twen51.com/)
 [![LED: WS2812B 16x16](https://img.shields.io/badge/Matrix-WS2812B%2016x16%20RGB-green.svg?style=flat-square)](https://www.world-semi.com/)
-[![Wireless: HM-10 BLE & ESP8266](https://img.shields.io/badge/Wireless-HM--10%20BLE%20%7C%20ESP8266-orange.svg?style=flat-square)](docs/)
-[![Platform: Tianwen Block & OneNET](https://img.shields.io/badge/Platform-Tianwen%20Block%20%7C%20OneNET-blueviolet.svg?style=flat-square)](src/)
+[![Wireless: HM-10 BLE](https://img.shields.io/badge/Wireless-HM--10%20BLE%204.0-orange.svg?style=flat-square)](docs/)
+[![Platform: Tianwen Block](https://img.shields.io/badge/Platform-Tianwen%20Block-blueviolet.svg?style=flat-square)](src/)
 [![Course: UESTC Comprehensive Project](https://img.shields.io/badge/UESTC-Comprehensive%20Curriculum%20Design-blueviolet.svg?style=flat-square)](https://www.uestc.edu.cn/)
 
 [**中文文档**](README.md) | [**English**](README_EN.md) | [**日本語**](README_JA.md)
@@ -22,11 +22,11 @@
 
 在智能家居、情感化人机交互与数字化声光艺术飞速发展的背景下，传统的灯具控制大多局限于单一的机械开关或基于智能手机 App 的冷启动触控，存在**交互维度单一、缺乏人机交互温度、无法在断网工况下工作、灯光表现力匮乏**等痛点。
 
-针对上述挑战，本课题以高集成度、沉浸式声光律动与多模态无线交互为导向，研发了一套**基于 ASRPRO 离线语音与 16×16 WS2812B 全彩矩阵的智能声光交互平台**：
+针对上述挑战，本课题以高集成度、沉浸式声光律动与多模态无线交互为导向，研发了一套**基于 ASRPRO 离线语音与 16×16 WS2812B 全彩矩阵的智能声光交互系统**：
 - **边缘离线 AI 语音枢纽**：以 **ASRPRO 高性能离线语音识别芯片**（天问 51 内核 / 神经网络语音处理器 NPU）为核心，内置硬件声学回声消除（AEC）与降噪算法，无需联网即可实现毫秒级快速响应（安静环境下识别准确率高达 $98\%$，典型噪声环境下超 $90\%$）；
 - **高密度全彩光矩阵**：将 4 块 8×8 WS2812B 智能外控 RGB 模组精密级联拼接为 **16×16 点阵屏（共 256 颗独立像素）**，通过单线高频归零码协议实现 24 位真彩色（16,777,216 色）细腻渲染；
 - **全木质实物集成与沉浸式交互**：自主设计并打磨实木画框与亚克力遮光面板，内置高保真差分麦克风与 8002A 音频功率放大器，支持情感表情动画（微笑道别、伤心流泪）、光立方彩虹渐变律动、低功耗蓝牙（HM-10 BLE 4.0）无线遥控以及交互式掌上贪吃蛇游戏；
-- **双模态演进架构**：系统向下兼容 **STM32F103 + ESP8266 + OneNET 物联网平台**的光照自适应闭环调光链路，形成“离线声光情感交互 + 远程端云协同监控”的完整初阶通关式技术栈。
+- **软硬件协同开发链路**：提供天问 Block（TWenBlock）可视化图形编程积木与底层 Native C++ 算法源码双轨开发支持，软硬件系统高度模块化、高鲁棒性。
 
 ---
 
@@ -226,7 +226,7 @@ $$
 | **无线通信接口** | HM-10 BLE 4.0 蓝牙从机 | 工作频段 2.4GHz ISM，传输距离空旷处 $> 10\text{m}$，端到端指令通信延迟 $< 50\text{ms}$ |
 | **外部结构与工艺** | 实木画框 + 亚克力面板 | 尺寸约 $150 \times 150 \times 40\text{ mm}$，3M 导热胶稳固矩阵，排针镀锡防震走线 |
 | **供电系统** | DC 5V 外部稳压电源输入 | 具备防反接与大电容储能滤波，动态工作电流 $0.2\text{A} \sim 2.0\text{A}$（亮度自限流保护） |
-| **物联网协同拓展** | STM32F103 + ESP8266 + OneNET | 12 位 ADC 光敏电阻环境光检测，TIM3 硬件 PWM 闭环调光与移动 App 远程控制 |
+| **开发环境与工具链** | 天问 Block (TWenBlock) / GCC | 支持图形化积木拼装及底层 C/C++ 源码编译烧录，Type-C USB 免驱下载 |
 
 ---
 
@@ -240,30 +240,23 @@ Intelligent-Lighting-Control-System-Basic/
 │       ├── demo_led_matrix_smile_face.jpg          # 16x16 矩阵微笑了表情高对比度实拍图 (2448x3264)
 │       ├── demo_hardware_wood_case.jpg             # 四象限彩虹流动光影木框成品图 (3048x4064)
 │       ├── demo_hardware_matrix_glow.jpg           # 点阵发光与内部走线细节图
+│       ├── demo_hardware_internal_wiring.jpg       # 矩阵背面走线与绝缘工艺细节图
 │       ├── hardware_asrpro_schematic.png           # ASRPRO 核心板官方完整原理图 (MCU/MIC/SPK/AEC)
 │       ├── hardware_ws2812_cascade_schematic.png   # WS2812B 级联与去耦电路原理图
 │       ├── hardware_asrpro_module.jpg              # ASRPRO 核心板硬件模块实拍图
 │       ├── software_tianwen_block_voice_config.png # 天问 Block 离线语音配置图形化界面图
 │       ├── software_matrix_pattern_design.png      # 16x16 像素图案字模矩阵设计器
-│       ├── software_bluetooth_control_app.png      # 蓝牙手机端无线交互控制界面图
-│       ├── system_architecture.png                 # 端云协同系统架构拓扑图
-│       ├── hardware_stm32.png                      # STM32F103C8T6 核心板实拍图
-│       ├── hardware_esp8266.png                    # ESP8266 串口 Wi-Fi 模块图
-│       ├── demo_android_app.png                    # Android 移动端照明控制 App 界面
-│       └── demo_onenet_cloud.png                   # OneNET 物联网云平台可视化仪表盘
+│       └── software_bluetooth_control_app.png      # 蓝牙手机端无线交互控制界面图
 ├── src/
-│   ├── asrpro_firmware/
-│   │   ├── main_asrpro_ws2812.cpp                  # ASRPRO 核心固件源码 (语音中断+WS2812矩阵驱动+表情状态机)
-│   │   └── tianwen_block_projects/
-│   │       ├── 最终版本.hd                         # 天问 Block 初阶完整工程源文件
-│   │       ├── 贪吃蛇.hd                           # 16x16 矩阵点阵贪吃蛇交互游戏工程
-│   │       ├── 蓝牙点灯.hd                         # HM-10 蓝牙通信控制工程
-│   │       ├── RGB.hd                              # 全彩色彩空间平滑渐变算法工程
-│   │       ├── 功能二.hd                           # 模式二功能工程
-│   │       └── 功能三.hd                           # 模式三功能工程
-│   └── stm32Project/                               # STM32+ESP8266+OneNET 闭环调光 Keil 源码
-│       ├── USER/                                   # 主逻辑、ADC采集、PWM调光、OneNET EDP协议栈
-│       └── FWLIB/                                  # STM32F10x 官方标准固件库
+│   └── asrpro_firmware/
+│       ├── main_asrpro_ws2812.cpp                  # ASRPRO 核心固件源码 (语音中断+WS2812矩阵驱动+表情状态机)
+│       └── tianwen_block_projects/
+│           ├── 最终版本.hd                         # 天问 Block 初阶完整工程源文件
+│           ├── 贪吃蛇.hd                           # 16x16 矩阵点阵贪吃蛇交互游戏工程
+│           ├── 蓝牙点灯.hd                         # HM-10 蓝牙通信控制工程
+│           ├── RGB.hd                              # 全彩色彩空间平滑渐变算法工程
+│           ├── 功能二.hd                           # 模式二功能工程
+│           └── 功能三.hd                           # 模式三功能工程
 ├── LICENSE                                         # MIT 官方开源许可协议
 ├── README.md                                       # 中文工程技术文档与数学推导
 ├── README_EN.md                                    # English Comprehensive Engineering Specification
