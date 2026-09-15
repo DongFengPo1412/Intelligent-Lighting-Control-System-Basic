@@ -1,12 +1,14 @@
-# Embedded Intelligent Lighting Control System Based on STM32, ESP8266 & OneNET Cloud (Basic Edition)
+# Intelligent Lighting & Audio-Visual Interactive System Based on ASRPRO & WS2812 Matrix (Basic Level)
+# 基于 ASRPRO 与 WS2812 矩阵的智能离线语音灯光音乐交互系统（初阶）
 
 <div align="center">
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
-[![MCU: STM32F103C8T6](https://img.shields.io/badge/MCU-STM32F103C8T6%20Cortex--M3-red.svg?style=flat-square)](https://www.st.com/)
-[![Wireless: ESP8266](https://img.shields.io/badge/Wireless-ESP8266%20Wi--Fi-orange.svg?style=flat-square)](https://www.espressif.com/)
-[![Cloud: OneNET IoT](https://img.shields.io/badge/Cloud-OneNET%20EDP%20IoT-blueviolet.svg?style=flat-square)](https://open.iot.10086.cn/)
-[![App: Android Studio](https://img.shields.io/badge/Mobile-Android%20TCP%20Client-green.svg?style=flat-square)](src/androidControl/)
+[![MCU: ASRPRO & STM32](https://img.shields.io/badge/MCU-ASRPRO%20AI%20Voice%20%7C%20STM32F103-red.svg?style=flat-square)](https://www.twen51.com/)
+[![LED: WS2812B 16x16](https://img.shields.io/badge/Matrix-WS2812B%2016x16%20RGB-green.svg?style=flat-square)](https://www.world-semi.com/)
+[![Wireless: HM-10 BLE & ESP8266](https://img.shields.io/badge/Wireless-HM--10%20BLE%20%7C%20ESP8266-orange.svg?style=flat-square)](docs/)
+[![Platform: Tianwen Block & OneNET](https://img.shields.io/badge/Platform-Tianwen%20Block%20%7C%20OneNET-blueviolet.svg?style=flat-square)](src/)
+[![Course: UESTC Comprehensive Project](https://img.shields.io/badge/UESTC-Comprehensive%20Curriculum%20Design-blueviolet.svg?style=flat-square)](https://www.uestc.edu.cn/)
 
 [**中文文档**](README.md) | [**English**](README_EN.md) | [**日本語**](README_JA.md)
 
@@ -14,185 +16,309 @@
 
 ---
 
-## 1. Project Overview
+## 1. Academic Heritage & Project Background
 
-The **Embedded Intelligent Lighting Control System Based on STM32, ESP8266 & OneNET Cloud** represents a high-reliability, cyber-physical IoT engineering solution engineered for smart architecture, adaptive indoor luminance management, and multi-tier wireless telemetry.
+This project is an outstanding engineering capstone deliverable from the **"Comprehensive Curriculum Design (Basic Level)"** at the **School of Automation Engineering, University of Electronic Science and Technology of China (UESTC)**.
 
-The core embedded architecture is powered by an industrial-grade **STMicroelectronics STM32F103C8T6 (ARM 32-bit Cortex-M3 core)** operating at 72 MHz. It integrates ambient photoresistor sensing, power MOSFET switching, hardware timer PWM modulation, dual asynchronous serial transceivers (USART), and an event-driven finite state machine. Addressing the hierarchical requirements of modern smart lighting—local closed-loop regulation, local-area mobile device interaction, and wide-area cloud diagnostics—the system implements a unified tri-modal control topology: **"Edge-Level Adaptive Closed-Loop Dimming + Local-Area Android App Socket Control + Wide-Area OneNET IoT Cloud Telemetry"**.
+In modern smart home ecosystems and ambient human-computer interaction (HCI), conventional lighting systems remain constrained to mechanical toggle switches or delayed mobile smartphone app operations. These existing architectures suffer from **one-dimensional interaction, a lack of affective emotional responsiveness, complete failure under network disconnection, and rigid illumination behavior**.
 
-At the physical sensing and signal processing layer, an integrated 12-bit successive approximation register (SAR) ADC paired with a discrete moving-average digital filter quantifies ambient illuminance in real time, driving general-purpose timer TIM3 Channel 2 to generate high-frequency ($10\text{ kHz}$) flicker-free PWM signals. At the network interconnect layer, an Espressif ESP8266 Wi-Fi bridge handles EDP (Enhanced Device Protocol) packetization for the OneNET cloud while simultaneously supporting transparent TCP socket streams for direct smartphone interaction.
+To tackle these challenges, this project engineered a self-contained, highly integrated **Offline AI Voice & 16×16 WS2812B RGB Matrix Intelligent Audio-Visual Interactive System**:
+- **Edge Offline AI Voice Engine**: Centered on the **ASRPRO SoC** (Tianwen 51 architecture / Neural Processing Unit NPU), incorporating hardware Acoustic Echo Cancellation (AEC) and noise suppression. It executes sub-200ms spoken command parsing locally without Internet connectivity ($\ge 98\%$ recognition accuracy in quiet environments, $> 90\%$ in typical ambient noise);
+- **High-Density Full-Color Optical Matrix**: Four $8 \times 8$ WS2812B smart RGB modules are seamlessly cascaded into a **16×16 matrix (256 individual RGB pixels)**, rendering 24-bit true color (16.77 million colors) via single-line 800kHz Non-Return-to-Zero (NZR) pulses;
+- **Handcrafted Wooden Enclosure & Multi-Modal Interaction**: Integrated inside a natural solid-wood picture frame with an acrylic diffuser, supporting emotional facial animations (smiling greeting, weeping sorrow), 4-quadrant rainbow color flow, Bluetooth Low Energy (HM-10 BLE 4.0) wireless control, and an interactive Snake arcade game;
+- **Dual-Stack Evolution**: Fully backward-compatible with an **STM32F103 + ESP8266 + OneNET IoT Cloud** adaptive closed-loop ambient dimming pipeline, forming a comprehensive cross-platform lighting engineering suite.
 
 ---
 
-## 2. Visual Showcase & Hardware Implementation
+## 2. Hardware & System Showcase
+
+### 2.1 Physical Hardware Enclosure & Matrix Illumination Showcase
 
 <div align="center">
 
-| System Architecture & Cyber-Physical Dataflow | STM32F103C8T6 Core Microcontroller Board |
+| 16×16 Matrix Wooden Frame & Interactive Snake Game State | Affective Expression Animation (Smiling Pixel Face) |
 | :---: | :---: |
-| <img src="docs/images/system_architecture.png" width="450" alt="System Architecture"> | <img src="docs/images/hardware_stm32.png" width="450" alt="STM32 Board"> |
-| **Android Mobile Application Interface** | **OneNET IoT Cloud Platform Telemetry Dashboard** |
-| <img src="docs/images/demo_android_app.png" width="450" alt="Android App"> | <img src="docs/images/demo_onenet_cloud.png" width="450" alt="OneNET Cloud"> |
+| <img src="docs/images/demo_hardware_enclosure_active.jpg" width="480" alt="Active Hardware Enclosure"> | <img src="docs/images/demo_led_matrix_smile_face.jpg" width="480" alt="Smile Face LED Matrix"> |
+| **Solid-Wood Frame Integration**: 4-quadrant cascaded WS2812B matrix running real-time pixel game inside natural wooden case | **Affective Expression Rendering**: 16×16 grid rendering high-contrast purple/white animated facial emotions |
+
+| Four-Quadrant Rainbow Color Flow | Matrix Layout & Internal Soldering Close-Up |
+| :---: | :---: |
+| <img src="docs/images/demo_hardware_wood_case.jpg" width="480" alt="Rainbow Gradient Glow"> | <img src="docs/images/demo_hardware_matrix_glow.jpg" width="480" alt="Internal Wiring and LEDs"> |
+| **Dynamic Ambient Rhythm**: Smooth blue-purple, emerald, fiery orange, and cyan gradient flow | **Craftsmanship & Wiring**: Industrial 3M thermal tape fixation, 2.54mm pin header soldering, and organized wiring |
 
 </div>
 
----
+### 2.2 System Architecture & End-to-End Data Flow
 
-## 3. Mathematical Formulations & Control Engineering Models
+The platform constitutes a closed-loop pipeline spanning acoustic input, neural speech parsing, matrix graphics rendering, and BLE control:
 
-The embedded firmware and control logic are underpinned by rigorous mathematical modeling, spanning photoelectric resistance transfer, digital filtering, hardware PWM modulation, and closed-loop illuminance compensation.
+```mermaid
+graph TD
+    A[User Voice Command: 'Hello Tianwen' / 'Turn On Lights'] -->|Differential Pickup| B[Electret Microphone + Preamp Circuit]
+    B -->|Analog Audio| C[ASRPRO SoC: Hardware AEC & Neural NPU]
+    C -->|Acoustic Model Matching| D{Confidence Score S > S_th}
+    D -->|Match Successful| E[8002A Audio PA + Speaker Playback]
+    D -->|Dispatch Command ID| F[Master State Machine: Animation / Mode / Game]
+    G[Smartphone BLE App / Controller] -->|BLE 4.0 UART Pass-through| H[HM-10 Bluetooth Module]
+    H -->|Command / Direction Stream| F
+    F -->|Single-Wire 800kHz NZR Pulses| I[WS2812B 16x16 Matrix (256 LEDs)]
+    I --> J[Dynamic Pixel Facial Expressions / Rainbow Ambient / Snake Game]
+```
 
-### 3.1 Photoresistor Photoelectric Transduction & Voltage Divider Model
-
-The electrical resistance $R_{\text{photo}}$ of a cadmium sulfide (CdS) photoresistor decays non-linearly with incident optical illuminance $E$ (measured in $\text{lux}$) according to an empirical power law. Given reference resistance $R_{10}$ at 10 lux and characteristic sensitivity coefficient $\gamma$:
-
-$$
-R_{\text{photo}}(E) = R_{10} \cdot \left( \frac{E}{10} \right)^{-\gamma}
-$$
-
-The analog conditioning stage comprises a series voltage divider with precision fixed resistor $R_{\text{fixed}}$. The instantaneous voltage presented to the ADC channel is given by:
-
-$$
-V_{\text{in}}(E) = V_{\text{ref}} \cdot \frac{R_{\text{photo}}(E)}{R_{\text{fixed}} + R_{\text{photo}}(E)}
-$$
-
-### 3.2 12-Bit Successive Approximation ADC Quantization & Moving Average Filtering
-
-The STM32F103 embedded 12-bit SAR ADC resolves voltages across $2^{12} - 1 = 4095$ discrete quantization intervals referenced to $V_{\text{ref}} = 3.3\text{ V}$. The discrete sampled integer value is:
-
-$$
-\text{ADC}_{\text{raw}} = \left\lfloor \frac{V_{\text{in}}}{V_{\text{ref}}} \cdot 4095 \right\rfloor
-$$
-
-To eliminate 50Hz/60Hz mains induction and high-frequency stochastic noise, a digital moving-average filter of window size $N = 10$ is executed:
-
-$$
-\overline{\text{ADC}}_k = \frac{1}{N} \sum_{i=0}^{N-1} \text{ADC}_{k-i}
-$$
-
-### 3.3 Timer TIM3 Hardware High-Frequency PWM Dimming Law
-
-The STM32 general-purpose timer TIM3 is clocked via the 72 MHz APB1 peripheral bus. Configured with prescaler register (PSC) and auto-reload register (ARR), the resulting hardware PWM carrier frequency is:
-
-$$
-f_{\text{PWM}} = \frac{f_{\text{CLK}}}{(\text{PSC} + 1) \cdot (\text{ARR} + 1)} = \frac{72\text{ MHz}}{(0 + 1) \cdot 7200} = 10\text{ kHz}
-$$
-
-The output duty cycle $D_{\text{PWM}}$ is programmed via capture/compare register CCR2:
-
-$$
-D_{\text{PWM}} = \frac{\text{CCR2}}{\text{ARR}} \times 100\% = \frac{\text{CCR2}}{7200} \times 100\%
-$$
-
-### 3.4 Piecewise Inverse Illuminance Adaptive Closed-Loop Compensation
-
-To maintain optical comfort and prevent oscillatory hunting, a multi-tier piecewise compensation function is executed:
-
-$$
-D_{\text{target}}(\overline{\text{ADC}}) = \begin{cases} \frac{5000}{7200} \approx 69.4\%, & \overline{\text{ADC}} > 3000 \quad (\text{Dim Ambient: High Compensation Output}) \\ \frac{3000}{7200} \approx 41.7\%, & 2000 < \overline{\text{ADC}} \le 3000 \quad (\text{Moderate Ambient: Standard Compensation}) \\ \frac{1000}{7200} \approx 13.9\%, & \overline{\text{ADC}} \le 2000 \quad (\text{Bright Ambient: Low-Power Standby}) \end{cases}
-$$
-
-### 3.5 End-to-End IoT Transmission Latency & Throughput Model
-
-Telemetry packets consist of protocol headers, payload sensor readings, and checksum bytes totaling $B_{\text{packet}} = 64\text{ Bytes}$. Over USART2 configured at $115200\text{ bps}$, the raw serialization latency is:
-
-$$
-T_{\text{UART}} = \frac{B_{\text{packet}} \times 10}{\text{BaudRate}} = \frac{64 \times 10}{115200} \approx 5.56\text{ ms}
-$$
-
-The aggregated end-to-end cloud latency incorporates digital filtering, UART bridging, 802.11 RF transmission, and public cloud ingress:
-
-$$
-T_{\text{total}} = T_{\text{filter}} + T_{\text{UART}} + T_{\text{RF}} + T_{\text{cloud}} \le 85\text{ ms}
-$$
+1. **Acoustic Frontend & Conditioning**: High-sensitivity electret microphone captures voice inputs with analog pre-filtering and differential biasing into the on-chip 16-bit ADC;
+2. **Edge Speech Intelligence**: Onboard NPU extracts Mel-Frequency Cepstral Coefficients (MFCC) and performs template scoring. Upon successful classification, the speech synthesizer drives the 8002A amplifier to broadcast spoken responses;
+3. **Graphics & Matrix Animation Engine**: Converts $16 \times 16$ bitmap glyphs across serpentine physical topology, supporting coordinate transformations and frame refresh rates exceeding 100 Hz;
+4. **Wireless BLE Interaction**: The HM-10 module receives BLE packets from mobile phones, allowing color tuning, brightness control, and directional control for the retro Snake arcade game.
 
 ---
 
-## 4. Hardware & Software Specifications
+## 3. Hardware Circuit Design & Interconnect Topology
 
-| Subsystem | Component / Technology | Specification Details |
+<div align="center">
+
+| ASRPRO Official Core Board Schematic (MCU + MIC + SPK + AEC) | WS2812B Cascading & Decoupling Circuit Diagram |
+| :---: | :---: |
+| <img src="docs/images/hardware_asrpro_schematic.png" width="480" alt="ASRPRO Schematic"> | <img src="docs/images/hardware_ws2812_cascade_schematic.png" width="480" alt="WS2812 Cascade Schematic"> |
+| **ASRPRO Core Architecture**: TW-ASR-Pro processor, Acoustic Echo Cancellation (AEC), differential MIC bias, and 8002A PA | **WS2812B Cascading Protocol**: Single-wire signal propagated from DIN to DOUT with dedicated 100nF decoupling capacitors |
+
+</div>
+
+### 3.1 ASRPRO Core Hardware Architecture
+
+The core board is engineered around the high-efficiency ASRPRO SoC:
+- **Processor Core**: Integrated Tianwen 51 core running alongside a 32-bit DSP neural coprocessor, supported by high-capacity SPI Flash storing vocabulary models and TTS wave tables;
+- **Microphone Preamplifier Circuit (MIC)**: Leverages a low-noise voltage reference `MICBIAS` with capacitors $C_8, C_9$ ($0.1\mu\text{F}$) and resistors $R_3, R_4, R_7$ ($2.2\text{k}\Omega / 10\text{k}\Omega$) forming a balanced differential input topology to reject power supply common-mode noise;
+- **Audio Power Amplifier Subsystem (SPK)**: Features the **8002A** class-AB audio power amplifier (SOP-8), delivering $3\text{W}$ output into a $3\Omega$ speaker at $5\text{V}$ with $< 10\%$ THD;
+- **Acoustic Echo Cancellation (AEC)**: Speaker positive terminal `SPKL+` is coupled via $C_{13}$ ($100\text{nF}$) and attenuator network $R_8, R_9$ back to `MICP_R`, actively canceling local playback audio so users can interrupt speech during active voice prompts.
+
+### 3.2 WS2812B 16×16 Cascaded Matrix Engineering
+
+- **Physical Cascading**: Assembled from four $8 \times 8$ rigid PCB panels in a $2 \times 2$ quadrant arrangement;
+- **Serial Signal Propagation**:
+  - Main signal line originates from ASRPRO digital pin `PA_2` into Panel 1 `DIN`;
+  - Panel 1 `DOUT` bridges directly to Panel 2 `DIN`, continuing sequentially through Panel 4 to form a 256-pixel continuous shift chain;
+- **Power Integrity & IR-Drop Compensation**: Total theoretical peak current at full white ($R=G=B=255$) reaches:
+  
+  $$
+  I_{\text{peak}} = 256 \times (20\text{ mA} \times 3) = 15.36\text{ A}
+  $$
+  
+  To eliminate chromatic distortion and brownout resets caused by trace resistance, maximum global brightness is clamped in firmware between $20\% \sim 30\%$ (average load $< 1.5\text{A}$), supplemented by a $1000\mu\text{F}$ low-ESR electrolytic capacitor across the primary 5V rail.
+
+### 3.3 Wireless BLE 4.0 Subsystem (HM-10)
+
+- **RF Specifications**: Based on the TI CC2541 BLE 4.0 transceiver operating in the $2.4\text{GHz}$ ISM band with GFSK modulation;
+- **UART Interface**: Connects to the host controller UART at $9600\text{bps}$ / $115200\text{bps}$. Mobile apps transmit single-byte control payloads (e.g., `'E'` launches the Snake game, `'W'` triggers the smiling face, `'R'`/`'G'`/`'B'` sets solid colors).
+
+---
+
+## 4. Mathematical Formulations & Driver Algorithms
+
+### 4.1 WS2812B Single-Wire Non-Return-to-Zero (NZR) Timing Equations
+
+WS2812B communication relies on nanosecond-accurate single-wire NZR pulses with nominal bit cycle $T_{\text{bit}} = 1.25\mu\text{s} \pm 150\text{ns}$:
+- **Logic 0 Code**: High time $T_{0\text{H}} = 400\text{ns} \pm 150\text{ns}$, Low time $T_{0\text{L}} = 850\text{ns} \pm 150\text{ns}$;
+- **Logic 1 Code**: High time $T_{1\text{H}} = 850\text{ns} \pm 150\text{ns}$, Low time $T_{1\text{L}} = 400\text{ns} \pm 150\text{ns}$;
+- **Latch Reset Pulse**: Low holding duration $T_{\text{reset}} > 50\mu\text{s}$ (firmware standard: $280\mu\text{s}$).
+
+Each LED consumes 24 bits transmitted **MSB first** in **G-R-B** sequence:
+
+$$
+\mathbf{C} = [G_7, G_6, \dots, G_0, R_7, R_6, \dots, R_0, B_7, B_6, \dots, B_0] \in \{0, 1\}^{24}
+$$
+
+For $N = 256$ cascaded LEDs, total transmission time per frame is:
+
+$$
+T_{\text{frame}} = N \cdot 24 \cdot T_{\text{bit}} + T_{\text{reset}} = 256 \times 24 \times 1.25\mu\text{s} + 280\mu\text{s} = 7.68\text{ ms} + 0.28\text{ ms} = 7.96\text{ ms}
+$$
+
+The theoretical maximum refresh rate without image tearing is:
+
+$$
+f_{\text{refresh, max}} = \frac{1}{T_{\text{frame}}} = \frac{1}{7.96 \times 10^{-3}\text{ s}} \approx 125.6\text{ Hz}
+$$
+
+This frame rate significantly surpasses the persistence-of-vision limit ($24\text{Hz}$), ensuring flicker-free fluid animations.
+
+### 4.2 16×16 Matrix Serpentine Coordinate Transformation
+
+Let 2D Cartesian screen coordinates be $(x, y)$ with $x \in [0, 15]$ (left to right) and $y \in [0, 15]$ (top to bottom).
+
+Because physical board routing alternates direction on adjacent rows to minimize trace length (Serpentine routing), the mapping from 2D coordinates $(x, y)$ to linear buffer index $\text{Index} \in [0, 255]$ satisfies:
+
+$$
+\text{Index}(x, y) = 
+\begin{cases} 
+16 \cdot y + x, & \text{for } y \equiv 0 \pmod 2 \quad (\text{even rows, forward}) \\
+16 \cdot y + (15 - x), & \text{for } y \equiv 1 \pmod 2 \quad (\text{odd rows, reverse})
+\end{cases}
+$$
+
+For bitmap rendering, let row glyph vector be $\mathbf{W}_y = [b_{15}, b_{14}, \dots, b_0]$. The pixel state is determined by:
+
+$$
+\text{PixelColor}(x, y) = 
+\begin{cases} 
+(R, G, B), & \text{if } (W_y \gg (15 - x)) \ \& \ 0x0001 = 1 \\
+(0, 0, 0), & \text{if } (W_y \gg (15 - x)) \ \& \ 0x0001 = 0
+\end{cases}
+$$
+
+### 4.3 Offline Speech Acoustic Feature Extraction & Maximum A Posteriori (MAP) Matching
+
+The ASRPRO neural coprocessor executes on-device Hidden Markov Model & Deep Neural Network (HMM-DNN) inference:
+1. **Framing & Windowing**: Sample rate $f_s = 16\text{kHz}$, frame length $25\text{ms}$, frame hop $10\text{ms}$, windowed with a Hamming window;
+2. **Mel-Frequency Cepstral Coefficients (MFCC)**: 24-channel triangular Mel filterbank convolution followed by Discrete Cosine Transform (DCT), deriving 13 static MFCCs plus velocity ($\Delta$) and acceleration ($\Delta\Delta$) components to build a 39-dimensional acoustic feature vector $\mathbf{O} = [\mathbf{o}_1, \dots, \mathbf{o}_T]$;
+3. **Maximum A Posteriori (MAP) Classification**:
+
+$$
+\hat{W} = \arg\max_{W \in \mathcal{W}} P(W | \mathbf{O}) = \arg\max_{W \in \mathcal{W}} \left[ \ln P(\mathbf{O} | W) + \lambda \ln P(W) \right]
+$$
+
+When confidence score $S(\hat{W}) \ge S_{\text{threshold}} = 0.85$, the engine validates recognition and triggers the corresponding command ID.
+
+---
+
+## 5. Software Engineering & Tianwen Block / C++ Architecture
+
+The codebase supports dual-track development: visual Tianwen Block (TWenBlock) graphical assembling alongside low-level native C/C++ firmware.
+
+<div align="center">
+
+| Tianwen Block Offline Voice Vocabulary Configuration | 16×16 Matrix Pixel Glyph Generator |
+| :---: | :---: |
+| <img src="docs/images/software_tianwen_block_voice_config.png" width="480" alt="Tianwen Block Voice Config"> | <img src="docs/images/software_matrix_pattern_design.png" width="480" alt="Matrix Pattern Design"> |
+| **Graphical Speech Setup**: Visual configuration of wake words, recognition keywords, and TTS playback phrases | **Matrix Pattern Designer**: Interactive 16×16 pixel grid editor generating compact uint16 hex glyph arrays |
+
+</div>
+
+- **Tianwen Block Environment**: Enables rapid block-based composition of voice callbacks, LED animations, and delays, compiling automatically into optimized firmware written over Type-C USB;
+- **Native C/C++ Finite State Machine**: High-performance animation dispatching implemented in [`src/asrpro_firmware/main_asrpro_ws2812.cpp`](file:///C:/workspace/Intelligent-Lighting-Control-System-Basic/src/asrpro_firmware/main_asrpro_ws2812.cpp):
+  ```cpp
+  // Core ASR callback finite state machine
+  void ASR_CODE() {
+    switch (snid) {
+      case 0: displaySpeakingAnimation(); break; // Wakeup: Animated mouth talking
+      case 1: displaySmileyAnimation();   break; // Command 1: Render dynamic smile
+      case 2: displaycryAnimation();      break; // Command 2: Render weeping crying face
+      case 3: displaySmileyAnimation();   break; // Command 3: Musical smile rhythm
+      case 4:                                   // Command 4: Turn off lights / Standby
+        ASR_WS2812_2.pixel_set_all_color(0, 0, 0);
+        ASR_WS2812_2.pixel_show();
+        break;
+    }
+  }
+  ```
+
+---
+
+## 6. System Technical Specifications Comparison
+
+| Subsystem Dimension | Hardware Component / Architecture | Detailed Specifications & Metrics |
 | :--- | :--- | :--- |
-| **Core Microcontroller** | STMicroelectronics STM32F103C8T6 | 32-bit ARM Cortex-M3 @ 72MHz, 64KB Flash, 20KB SRAM |
-| **Wireless Module** | Espressif ESP8266 (ESP-01/12F) | 802.11 b/g/n Wi-Fi, STA/AP dual support, UART AT bridge |
-| **Optical Sensor** | Cadmium Sulfide (CdS) Photoresistor | Peak spectral sensitivity $400 \sim 700\text{ nm}$, response time $\le 30\text{ ms}$ |
-| **Analog-to-Digital (ADC)** | 12-Bit SAR ADC (ADC1_IN1) | $1\text{ MSPS}$ conversion speed, PA1 pin, 10-point moving average |
-| **Power Stage Driver** | Low-Side N-Channel Power MOSFET | Rated up to 24V / 5A DC load, optocoupler-isolated input |
-| **PWM Characteristics** | General Timer TIM3 Channel 2 (PA7) | Carrier frequency $10\text{ kHz}$, 7200-step resolution, flicker-free |
-| **Cloud Protocol** | China Mobile OneNET IoT Platform | EDP (Enhanced Device Protocol) persistent link, 2.0s telemetry cycle |
-| **Mobile Application** | Native Android Client (Java/Socket) | Direct TCP socket stream, granular step-dimming ($\pm 1000$) |
+| **Master Processor (MCU)** | Tianwen 51 ASRPRO (TW-ASR-Pro) | AI Voice SoC with integrated neural inference coprocessor @ 240MHz |
+| **Speech Recognition Engine** | On-chip Acoustic Model (NPU) | Up to 150 offline command phrases, $\ge 98\%$ accuracy in quiet rooms, $< 0.2\text{s}$ latency |
+| **Acoustic Frontend & Audio** | Differential Electret Mic + 8002A PA | Hardware AEC, 3W class-AB power amplifier, 8-level dynamic digital volume |
+| **Full-Color LED Matrix** | WS2812B-V5 Smart RGB LEDs | Four $8 \times 8$ panels forming $16 \times 16$ (256 pixels), 24-bit color, refresh rate $> 120\text{Hz}$ |
+| **Wireless Connectivity** | HM-10 BLE 4.0 Bluetooth Slave | 2.4GHz ISM band, $> 10\text{m}$ line-of-sight range, end-to-end latency $< 50\text{ms}$ |
+| **Physical Enclosure** | Natural Solid Wood + Acrylic Panel | Dimensions $\approx 150 \times 150 \times 40\text{ mm}$, 3M thermal adhesive matrix mounting |
+| **Power Supply** | DC 5V External Regulated Supply | Reverse-polarity protected, operating current $0.2\text{A} \sim 2.0\text{A}$ (brightness clamped) |
+| **IoT Expansion Stack** | STM32F103 + ESP8266 + OneNET | 12-bit ADC photoresistor sensing, TIM3 PWM dimming, and Android mobile client |
 
 ---
 
-## 5. Repository Layout
+## 7. Repository Layout & File Manifest
 
 ```text
 Intelligent-Lighting-Control-System-Basic/
 ├── docs/
 │   └── images/
-│       ├── system_architecture.png       # Comprehensive system dataflow architecture
-│       ├── hardware_stm32.png            # STM32F103C8T6 development board photograph
-│       ├── hardware_esp8266.png          # ESP8266 Wi-Fi transceiver module
-│       ├── hardware_led_control.png      # Power switching & conditioning driver board
-│       ├── hardware_led_power.png        # Regulated LED constant-voltage power supply
-│       ├── hardware_stlink.png           # ST-Link V2 SWD hardware debugger
-│       ├── hardware_cp2102.png           # CP2102 USB-to-UART serial interface module
-│       ├── demo_android_app.png          # Android application runtime screenshot
-│       └── demo_onenet_cloud.png         # OneNET IoT platform telemetry stream dashboard
+│       ├── demo_hardware_enclosure_active.jpg      # Active wooden frame illumination and game photo (4064x3048)
+│       ├── demo_led_matrix_smile_face.jpg          # High-contrast purple/white smile face capture (2448x3264)
+│       ├── demo_hardware_wood_case.jpg             # Four-quadrant rainbow flow ambient capture (3048x4064)
+│       ├── demo_hardware_matrix_glow.jpg           # LED matrix glow and internal wiring detail
+│       ├── hardware_asrpro_schematic.png           # Complete official ASRPRO core board schematic
+│       ├── hardware_ws2812_cascade_schematic.png   # WS2812B single-wire cascade and decoupling schematic
+│       ├── hardware_asrpro_module.jpg              # ASRPRO hardware core module photograph
+│       ├── software_tianwen_block_voice_config.png # Tianwen Block voice command graphical setup screen
+│       ├── software_matrix_pattern_design.png      # 16x16 pixel glyph designer and bitmask generator
+│       ├── software_bluetooth_control_app.png      # Mobile Bluetooth control app interface
+│       ├── system_architecture.png                 # End-to-end cloud-edge system architecture diagram
+│       ├── hardware_stm32.png                      # STM32F103C8T6 minimum system board photo
+│       ├── hardware_esp8266.png                    # ESP8266 serial Wi-Fi module photo
+│       ├── demo_android_app.png                    # Android lighting remote control mobile client
+│       └── demo_onenet_cloud.png                   # OneNET IoT platform dashboard screenshot
 ├── src/
-│   ├── stm32Project/                     # Keil uVision MDK-ARM embedded firmware project
-│   │   ├── CMSIS/                        # ARM Cortex-M3 core support package
-│   │   ├── FWLIB/                        # STM32F10x standard peripheral library
-│   │   └── USER/                         # Application source code
-│   │       ├── main.c                    # Main scheduling loop & mode state machine
-│   │       ├── adc.c / adc.h             # 12-bit ADC driver & moving average filter
-│   │       ├── timer.c / timer.h         # Hardware TIM3 PWM carrier generator
-│   │       ├── esp8266.c / esp8266.h     # ESP8266 AT driver & TCP transmission engine
-│   │       ├── onenet.c / onenet.h       # OneNET telemetry packet serializer
-│   │       ├── edpkit.c / edpkit.h       # EDP protocol packager & parser stack
-│   │       ├── key.c / key.h             # Tactile key debouncing & scanning
-│   │       └── usart.c / usart.h         # USART1 console & USART2 ESP8266 drivers
-│   └── androidControl/                   # Native Android Studio mobile application
-│       ├── app/                          # Mobile UI layouts & socket communication
-│       └── gradle/                       # Gradle build automation scripts
-├── .gitignore                            # Keil MDK & Android Studio build artifact rules
-├── LICENSE                               # Official MIT Open Source License
-├── README.md                             # Chinese Technical Documentation
-├── README_EN.md                          # English Engineering Specification
-└── README_JA.md                          # Japanese Academic & Industrial Portfolio
+│   ├── asrpro_firmware/
+│   │   ├── main_asrpro_ws2812.cpp                  # ASRPRO native C++ firmware (ASR callbacks + WS2812 engine)
+│   │   └── tianwen_block_projects/
+│   │       ├── 最终版本.hd                         # Full Tianwen Block basic capstone project file
+│   │       ├── 贪吃蛇.hd                           # 16x16 matrix interactive Snake game project
+│   │       ├── 蓝牙点灯.hd                         # HM-10 Bluetooth wireless control project
+│   │       ├── RGB.hd                              # Full-color space smooth gradient algorithm project
+│   │       ├── 功能二.hd                           # Mode 2 function project
+│   │       └── 功能三.hd                           # Mode 3 function project
+│   └── stm32Project/                               # STM32+ESP8266+OneNET Keil uVision project
+│       ├── USER/                                   # Main loop, ADC sampling, PWM dimming, OneNET EDP stack
+│       └── FWLIB/                                  # STM32F10x standard firmware library
+├── LICENSE                                         # MIT Official Open-Source License
+├── README.md                                       # Chinese Technical Specification & Derivations
+├── README_EN.md                                    # English Comprehensive Engineering Specification
+└── README_JA.md                                    # Japanese Technical Specification & Portfolio
 ```
 
 ---
 
-## 6. Build, Deployment & Quick Start Guide
+## 8. Quick Start Guide
 
-### 6.1 Hardware Pin Mapping
+### 8.1 Hardware Pin Connections
 
-| Peripheral | Pin Header | STM32 Pin | Functional Description |
-| :---: | :---: | :---: | :---: |
-| **Photoresistor Sensor** | AO (Analog Out) | **PA1** | ADC1_IN1, ambient luminance voltage sampling |
-| **LED MOSFET Driver** | PWM_IN | **PA7** | TIM3_CH2, 10 kHz high-frequency PWM dimming line |
-| **ESP8266 Wi-Fi** | TXD | **PA3** | USART2_RX, incoming telemetry and downlink frames |
-| **ESP8266 Wi-Fi** | RXD | **PA2** | USART2_TX, outgoing AT commands and EDP telemetry |
-| **UART Debug Port** | TXD / RXD | **PA9 / PA10** | USART1_TX / USART1_RX, 115200bps logging console |
-| **Tactile Key Matrix** | KEY0 ~ KEY3 | **PB0 ~ PB3** | Mode selection and manual override triggers |
+| ASRPRO Pin | External Module / Connection Target | Electrical Function |
+| :---: | :---: | :---: |
+| **5V** | WS2812B Matrix $V+$ / Bluetooth VCC | DC 5V System Power Bus |
+| **GND** | WS2812B Matrix $V-$ / Bluetooth GND | Power Ground Reference |
+| **PA_2** | WS2812B Panel 1 `DIN` | Single-Wire 800kHz NZR Data Drive |
+| **TXD (UART0_TX)** | HM-10 Bluetooth `RXD` | Asynchronous Serial Transmit (9600 baud) |
+| **RXD (UART0_RX)** | HM-10 Bluetooth `TXD` | Asynchronous Serial Receive |
+| **SPKL+ / SPKL-** | 8Ω 2W Miniature Speaker | 8002A Differential Bridge Audio Output |
+| **MICL+ / MIC-** | Electret Microphone Element | Differential Audio Sensing Input |
 
-### 6.2 Firmware Compilation & Flashing
+### 8.2 Toolchain Setup & Tianwen Block Compilation
 
-1. Launch **Keil uVision5 (MDK-ARM v5.x)** with the `Keil.STM32F1xx_DFP` device pack installed.
-2. Open the project file: `src/stm32Project/smartlamp.uvprojx`.
-3. Connect an **ST-Link V2** in-circuit programmer to the development board SWD header (SWCLK, SWDIO, GND, 3V3).
-4. Click **Rebuild** to compile source code with zero warnings, then press **Download** (F8) to program the Flash memory.
+1. Download and install **Tianwen Block 2025 (TWenBlock)**;
+2. Launch Tianwen Block, click "Open Project" in the upper right, and import [`src/asrpro_firmware/tianwen_block_projects/最终版本.hd`](file:///C:/workspace/Intelligent-Lighting-Control-System-Basic/src/asrpro_firmware/tianwen_block_projects/最终版本.hd);
+3. Connect the ASRPRO core board to your PC via a Type-C USB cable;
+4. Select the target board `ASRPRO-Core` and choose the corresponding CH340 COM port;
+5. Click **"Compile Firmware"** to generate machine code, bitmasks, and C++ source files;
+6. Click **"Download"** to flash the binary into the onboard Flash memory via USB ISP.
 
-### 6.3 Operational Modes & Verification
+### 8.3 Operation & Command Reference
 
-1. **Boot Initialization**: On power-up, the system enters autonomous closed-loop adaptive dimming by default.
-2. **Mode Transitions**:
-   - Press **KEY3**: Enters manual dimming mode; buttons increment/decrement duty cycle directly.
-   - Press **KEY4**: Enables OneNET cloud telemetry; ESP8266 establishes a persistent connection and streams illuminance readings every 2 seconds.
-   - Press **KEY5**: Activates Android mobile control mode; ESP8266 operates in transparent TCP server mode, awaiting commands from the companion app.
+1. **Wake Up System**: Say the default wake phrase **"Hello Tianwen"**;
+   - Speaker announces: *"I'm here, master"* (在呢，主人);
+   - The matrix renders an animated mouth talking pattern;
+2. **Expression Commands**:
+   - Say **"Display Smile"** (显示笑脸): The screen renders a smiling dynamic expression in purple/white;
+   - Say **"Don't Cry"** (不要哭): The matrix displays weeping tears accompanied by soothing voice audio;
+3. **Lighting Rhythm & Ambient Modes**:
+   - Say **"Turn On Lights"** (打开灯光): The matrix transitions into a 4-quadrant rainbow gradient flow;
+   - Say **"Turn Off Lights"** (关闭灯光): All LEDs extinguish, putting the system into standby;
+4. **Bluetooth Control & Snake Game**:
+   - Open a mobile BLE serial app (e.g., *BLE SPP* or *Blinker*) and pair with `HM-10`;
+   - Send character `'E'` to initiate the Snake arcade game, steering the snake across the matrix with directional buttons.
 
 ---
 
-## 7. License
+## 9. Academic Credits & Acknowledgments
 
-This repository is distributed under the open-source **MIT License**. Refer to the [LICENSE](LICENSE) file for complete details.
+- **Development Team**: 2023 Undergraduate Cohort, School of Automation Engineering, University of Electronic Science and Technology of China (UESTC);
+  - Core Members: Student IDs 2023060904025 (Haoran Liu), 2023060909014, et al.;
+- **Advising Faculty**: Comprehensive Curriculum Design Teaching Team, School of Automation Engineering, UESTC;
+- **Open-Source Acknowledgments**: Special gratitude to the Tianwen 51 (TWen51) developer community for technical support on the ASRPRO speech SDK.
+
+---
+
+## 10. Open-Source License
+
+All firmware, project files, and technical documentation in this repository are released under the **MIT License**. For terms, refer to the [LICENSE](LICENSE) file.

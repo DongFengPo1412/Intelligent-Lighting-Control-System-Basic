@@ -1,13 +1,14 @@
-# STM32・ESP8266・OneNET クラウド連携型 組み込みスマート調光システム (基礎版)
-# Embedded Intelligent Lighting Control System Based on STM32, ESP8266 & OneNET Cloud
+# ASRPRO と WS2812 マトリクスに基づくスマートオフライン音声照明・音響視覚対話システム（初級）
+# Intelligent Lighting & Audio-Visual Interactive System Based on ASRPRO & WS2812 Matrix (Basic Level)
 
 <div align="center">
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
-[![MCU: STM32F103C8T6](https://img.shields.io/badge/MCU-STM32F103C8T6%20Cortex--M3-red.svg?style=flat-square)](https://www.st.com/)
-[![Wireless: ESP8266](https://img.shields.io/badge/Wireless-ESP8266%20Wi--Fi-orange.svg?style=flat-square)](https://www.espressif.com/)
-[![Cloud: OneNET IoT](https://img.shields.io/badge/Cloud-OneNET%20EDP%20IoT-blueviolet.svg?style=flat-square)](https://open.iot.10086.cn/)
-[![App: Android Studio](https://img.shields.io/badge/Mobile-Android%20TCP%20Client-green.svg?style=flat-square)](src/androidControl/)
+[![MCU: ASRPRO & STM32](https://img.shields.io/badge/MCU-ASRPRO%20AI%20Voice%20%7C%20STM32F103-red.svg?style=flat-square)](https://www.twen51.com/)
+[![LED: WS2812B 16x16](https://img.shields.io/badge/Matrix-WS2812B%2016x16%20RGB-green.svg?style=flat-square)](https://www.world-semi.com/)
+[![Wireless: HM-10 BLE & ESP8266](https://img.shields.io/badge/Wireless-HM--10%20BLE%20%7C%20ESP8266-orange.svg?style=flat-square)](docs/)
+[![Platform: Tianwen Block & OneNET](https://img.shields.io/badge/Platform-Tianwen%20Block%20%7C%20OneNET-blueviolet.svg?style=flat-square)](src/)
+[![Course: UESTC Comprehensive Project](https://img.shields.io/badge/UESTC-Comprehensive%20Curriculum%20Design-blueviolet.svg?style=flat-square)](https://www.uestc.edu.cn/)
 
 [**中文文档**](README.md) | [**English**](README_EN.md) | [**日本語**](README_JA.md)
 
@@ -15,185 +16,309 @@
 
 ---
 
-## 1. プロジェクト概要 (Project Overview)
+## 1. 学術的背景とプロジェクト沿革 (Academic Heritage & Background)
 
-**STM32・ESP8266・OneNET クラウド連携型 組み込みスマート調光システム**は、スマートビルディング、省エネルギー環境制御、および多層IoT通信を志向した高信頼性サイバーフィジカル工学ソリューションです。
+本プロジェクトは、**電子科技大学（UESTC）自動化工程学院**の学部コア実践カリキュラム——**「総合カリキュラム設計（初級）」**における優秀なエンジニアリング成果です。
 
-システムの中核プロセッサには産業グレードの **STMicroelectronics STM32F103C8T6 (ARM 32ビット Cortex-M3 コア @ 72MHz)** を採用。CdS光導電素子による環境照度センシング、パワーMOSFETによる低損失スイッチング駆動、マルチチャネルハードウェアタイマPWM調光、デュアル非同期シリアル通信（USART）、およびイベント駆動型有限状態機械を高密度に統合しています。スマート照明における局所適応制御、モバイルLAN直結操作、および広域クラウド遠隔監視という複合的な要求に対し、**「エッジ側閉ループ自律適応調光 ＋ 構内 Android 端末リアルタイム制御 ＋ 広域 OneNET IoT クラウドテレメトリ」**という三次元統合制御アーキテクチャを確立しました。
+スマートホーム、エモーショナルなヒューマンマシンインターフェース（HCI）、およびデジタル音響・光アートの急速な発展に伴い、従来の照明器具は単純な機械式スイッチやスマートフォンのコールドスタート操作に依存してきました。これにより、**対話の次元が単一であり、人間味のある情動応答に欠け、ネットワーク切断時に完全停止し、光の表現力が乏しい**という課題が存在していました。
 
-信号処理層では、内蔵12ビット逐次比較型（SAR）ADCと移動平均デジタルフィルタにより環境照度を高精度に定量化し、タイマ TIM3 チャネル2 から $10\text{ kHz}$ の高周波フリッカーフリーPWMを出力。通信層では、ESP8266 Wi-Fi ブリッジを介して EDP（Enhanced Device Protocol）プロトコルに基づくクラウドテレメトリと、透過型 TCP ソケットによるスマートフォン双方向コマンドリンクを同時に提供し、マイクロ秒オーダーの即応性と産業機器レベルの堅牢性を両立しています。
+これらの課題に対処するため、本プロジェクトでは高集積・没入型の音響照明リズムとマルチモーダル対話を目指し、**ASRPROオフライン音声認識と 16×16 WS2812B フルカラーLEDマトリクスに基づくスマート音響視覚対話プラットフォーム**を開発しました：
+- **エッジオフラインAI音声中枢**：**ASRPRO 高性能オフライン音声認識SoC**（天問51アーキテクチャ / ニューラルプロセッサNPU）をコアに採用し、ハードウェア音響エコーキャンセル（AEC）とノイズ低減フィルタを内蔵。クラウド不要でミリ秒クラスの即時応答を実現（静音環境での認識率 $\ge 98\%$、一般的ノイズ環境で $90\%$ 以上）；
+- **高密度フルカラー光マトリクス**：4枚の $8 \times 8$ WS2812B 外部制御RGBモジュールを精密にカスケード接合し、**16×16 ドットマトリクス（合計256個の独立RGBピクセル）**を構成。単線式800kHz Non-Return-to-Zero（NZR）プロトコルにより、24ビットトゥルーカラー（1677万色）の滑らかな階調表現を実現；
+- **木製額縁ハードウェアと没入型インタラクション**：天然無垢材フレームとアクリル拡散板を独自設計・加工。高精度差動マイクと 8002A オーディオパワーアンプを内蔵し、エモーショナルな表情アニメーション（笑顔・泣き顔）、4象限レインボーグラデーション光、低消費電力Bluetooth（HM-10 BLE 4.0）無線リモコン、および対話型スネークゲームをサポート；
+- **デュアルスタック協調**：**STM32F103 + ESP8266 + OneNET IoT クラウド**に基づく環境光適応型閉ループ調光システムと下位互換性を保持し、「オフライン音響視覚インタラクション＋遠隔クラウド監視」を網羅する包括的技術スタックを構築。
 
 ---
 
-## 2. ハードウェア実装とシステム外観 (Visual Showcase)
+## 2. ハードウェア実機写真とシステムアーキテクチャ (Hardware & System Showcase)
+
+### 2.1 木製額縁実機とマトリクス発光デモ (Physical Hardware Artifacts)
 
 <div align="center">
 
-| システム全体アーキテクチャ・データフロー | STM32F103C8T6 制御コア基板実物 |
+| 16×16 マトリクス木製額縁実機とスネークゲーム状態 | エモーショナル表情アニメーション（ピクセル笑顔）実写 |
 | :---: | :---: |
-| <img src="docs/images/system_architecture.png" width="450" alt="System Architecture"> | <img src="docs/images/hardware_stm32.png" width="450" alt="STM32 Board"> |
-| **Android モバイル端末操作アプリ UI** | **OneNET 広域 IoT クラウド遠隔テレメトリ画面** |
-| <img src="docs/images/demo_android_app.png" width="450" alt="Android App"> | <img src="docs/images/demo_onenet_cloud.png" width="450" alt="OneNET Cloud"> |
+| <img src="docs/images/demo_hardware_enclosure_active.jpg" width="480" alt="Active Hardware Enclosure"> | <img src="docs/images/demo_led_matrix_smile_face.jpg" width="480" alt="Smile Face LED Matrix"> |
+| **無垢材額縁への統合**：4象限にカスケードされたWS2812Bマトリクス上で動作するスネークゲーム画面 | **表情レンダリング**：16×16 格子上で紫と白のハイコントラストで描画されるダイナミックな笑顔アニメーション |
+
+| 4象限レインボーグラデーション光の展示 | マトリクス内部配線とはんだ付け工芸 |
+| :---: | :---: |
+| <img src="docs/images/demo_hardware_wood_case.jpg" width="480" alt="Rainbow Gradient Glow"> | <img src="docs/images/demo_hardware_matrix_glow.jpg" width="480" alt="Internal Wiring and LEDs"> |
+| **4象限レインボーフロー**：青紫、エメラルド、橙赤、シアンが滑らかに遷移するアンビエントライト | **ハードウェア実装工芸**：3M熱伝導両面テープによる固定、2.54mm標準ピンヘッダの半田付けと防振配線 |
 
 </div>
 
----
+### 2.2 システム全体トポロジと音響視覚データフロー (System Architecture & Data Flow)
 
-## 3. 数理モデルと制御工学的定式化 (Mathematical Formulations)
+システムは、音響集音、オフラインニューラル音声認識、マトリクス描画からBLE制御に至る閉ループ構造を形成しています：
 
-エッジファームウェアおよび制御ループには、厳密な光電変換理論、離散フィルタリング、ハードウェアPWM変調特性、および適応補償則が実装されています。
+```mermaid
+graph TD
+    A[ユーザ音声コマンド: '你好小天' / '打开灯光'] -->|差動集音| B[エレクトレットマイク + 前置アンプ回路]
+    B -->|アナログ音声信号| C[ASRPRO SoC: AEC エコーキャンセル & 内部 NPU]
+    C -->|音響モデルスコアリング| D{確信度判定 S > S_th}
+    D -->|マッチング成功| E[8002A アンプ + スピーカー 音声再生]
+    D -->|コマンド ID 送信| F[マスター状態遷移機: アニメーション / モード / ゲーム]
+    G[スマートフォン BLE アプリ / コントローラ] -->|BLE 4.0 UART シリアル透過| H[HM-10 Bluetooth モジュール]
+    H -->|ボタン / 方向制御ストリーム| F
+    F -->|単線式 800kHz NZR パルス駆動| I[WS2812B 16x16 フルカラーマトリクス (256 LED)]
+    I --> J[ダイナミックピクセル表情 / 4象限レインボーライト / スネークゲーム]
+```
 
-### 3.1 光導電素子（CdS）光電変換特性と分圧回路方程式
-
-硫化カドミウム光導電セルの電気抵抗値 $R_{\text{photo}}$ は、入射照度 $E$（単位：$\text{lux}$）に対して非線形べき乗特性に従って減少します。10 lux における基準抵抗を $R_{10}$、光電感度指数を $\gamma$ と定義します：
-
-$$
-R_{\text{photo}}(E) = R_{10} \cdot \left( \frac{E}{10} \right)^{-\gamma}
-$$
-
-分圧回路は精密基準抵抗 $R_{\text{fixed}}$ との直列接続で構成され、ADC サンプリング端子に入力される瞬時分圧値は以下で与えられます：
-
-$$
-V_{\text{in}}(E) = V_{\text{ref}} \cdot \frac{R_{\text{photo}}(E)}{R_{\text{fixed}} + R_{\text{photo}}(E)}
-$$
-
-### 3.2 12ビット逐次比較型（SAR）ADC 量子化と移動平均デジタルフィルタ
-
-STM32F103 内蔵の 12ビット SAR ADC は、基準電圧 $V_{\text{ref}} = 3.3\text{ V}$ に対し $2^{12} - 1 = 4095$ 階調の離散量子化を実行します：
-
-$$
-\text{ADC}_{\text{raw}} = \left\lfloor \frac{V_{\text{in}}}{V_{\text{ref}}} \cdot 4095 \right\rfloor
-$$
-
-商用電源の誘導ノイズや高周波ランダム雑音を除去するため、窓長 $N = 10$ の離散移動平均フィルタを適用します：
-
-$$
-\overline{\text{ADC}}_k = \frac{1}{N} \sum_{i=0}^{N-1} \text{ADC}_{k-i}
-$$
-
-### 3.3 タイマ TIM3 ハードウェア高周波 PWM 変調出力特性
-
-STM32 の汎用タイマ TIM3 は 72MHz APB1 バス上に配置され、プリスケーラレジスタ（PSC）および自動再ロードレジスタ（ARR）により高周波キャリアを生成します：
-
-$$
-f_{\text{PWM}} = \frac{f_{\text{CLK}}}{(\text{PSC} + 1) \cdot (\text{ARR} + 1)} = \frac{72\text{ MHz}}{(0 + 1) \cdot 7200} = 10\text{ kHz}
-$$
-
-有効デューティ比 $D_{\text{PWM}}$ はキャプチャ/比較レジスタ CCR2 により直接制御されます：
-
-$$
-D_{\text{PWM}} = \frac{\text{CCR2}}{\text{ARR}} \times 100\% = \frac{\text{CCR2}}{7200} \times 100\%
-$$
-
-### 3.4 区分線形逆照度自律適応閉ループ補償則
-
-視覚的快適性を保ち過補償によるハンチングを防止するため、不感帯付き三段階区分適応補償関数を適用します：
-
-$$
-D_{\text{target}}(\overline{\text{ADC}}) = \begin{cases} \frac{5000}{7200} \approx 69.4\%, & \overline{\text{ADC}} > 3000 \quad (\text{暗所環境：高出力光補償}) \\ \frac{3000}{7200} \approx 41.7\%, & 2000 < \overline{\text{ADC}} \le 3000 \quad (\text{適正照度：標準補償維持}) \\ \frac{1000}{7200} \approx 13.9\%, & \overline{\text{ADC}} \le 2000 \quad (\text{明所環境：省電力待機調光}) \end{cases}
-$$
-
-### 3.5 端雲間 IoT 通信遅延と物理伝送スループット境界
-
-テレメトリパケット（ヘッダ、測定値、チェックサム）のサイズを $B_{\text{packet}} = 64\text{ Bytes}$、USART2 ボーレートを $115200\text{ bps}$ としたとき、シリアル伝送遅延は：
-
-$$
-T_{\text{UART}} = \frac{B_{\text{packet}} \times 10}{\text{BaudRate}} = \frac{64 \times 10}{115200} \approx 5.56\text{ ms}
-$$
-
-フィルタリング処理、UART 送信、802.11 無線伝送、およびインターネット網遅延を包含した端雲往復遅延特性は以下を満たします：
-
-$$
-T_{\text{total}} = T_{\text{filter}} + T_{\text{UART}} + T_{\text{RF}} + T_{\text{cloud}} \le 85\text{ ms}
-$$
+1. **音響フロントエンド層 (Acoustic Frontend)**：高感度エレクトレットマイクが音声信号を捉え、アナログ差動バイアス回路でノイズを抑圧して16ビットADCへ供給；
+2. **エッジ音声認識層 (Edge Speech AI)**：チップ内蔵のNPUがメル周波数ケプストラム係数（MFCC）を抽出し、テンプレートスコアリングを実行。認識成功時に内蔵音声合成と8002Aアンプを介して応答音声を再生；
+3. **光アニメーション＆グラフィックスエンジン (Matrix Display Engine)**：16×16 ビットマップフォントライブラリと蛇行配線マッピングアルゴリズムを内蔵し、100Hz超のフレームレートで滑らかな画面更新を実現；
+4. **無線Bluetooth・ゲーム対話層 (BLE & Game)**：HM-10モジュールを介してスマホからの調光指令やスネークゲームの方向指示を受信・処理。
 
 ---
 
-## 4. ハードウェア・ソフトウェア諸元 (System Specifications)
+## 3. ハードウェア回路設計と接続トポロジ (Hardware & Circuit Design)
 
-| サブシステム項目 | 採用技術・コンポーネント | 仕様諸元および実装標準 |
+<div align="center">
+
+| ASRPRO コア基板公式回路図 (MCU + MIC + SPK + AEC) | WS2812B 単線カスケード接続とデカップリング回路図 |
+| :---: | :---: |
+| <img src="docs/images/hardware_asrpro_schematic.png" width="480" alt="ASRPRO Schematic"> | <img src="docs/images/hardware_ws2812_cascade_schematic.png" width="480" alt="WS2812 Cascade Schematic"> |
+| **ASRPRO コア回路**：TW-ASR-Pro プロセッサ、音響エコーキャンセル（AEC）、MICBIAS 差動バイアス、8002A アンプ | **WS2812B カスケード接続**：DIN から DOUT へ単線信号を波形整形伝送、各LEDに100nFバイパスコンデンサを配置 |
+
+</div>
+
+### 3.1 ASRPRO コア基板のハードウェア構成
+
+ASRPRO コアモジュールは、オフライン音声処理に特化した高集積SoC回路を採用しています：
+- **プロセッサコア**：天問51コアと32ビットDSPニューラルアクセラレータを搭載し、大容量SPI Flashに音声辞書とファームウェアを保持；
+- **マイクロフォン前置増幅回路 (MIC)**：低ノイズ基準電源 `MICBIAS`、コンデンサ $C_8, C_9$（$0.1\mu\text{F}$）、抵抗 $R_3, R_4, R_7$（$2.2\text{k}\Omega / 10\text{k}\Omega$）による差動入力構成で同相電源ノイズを除去；
+- **オーディオパワーアンプ (SPK / 8002A)**：車載・産業用小型AB級オーディオアンプ **8002A**（SOP-8）を採用し、$5\text{V}$ 駆動、$3\Omega$ 負荷時に最大 $3\text{W}$（THD $< 10\%$）の十分な音量出力を確保；
+- **音響エコーキャンセル回路 (AEC)**：スピーカー正極 `SPKL+` から $C_{13}$（$100\text{nF}$）および分圧抵抗 $R_8, R_9$ を通じて `MICP_R` へ音声波形をフィードバックし、ガイダンス音声再生中であってもユーザーの割り込み発話を正確に検出。
+
+### 3.2 WS2812B 16×16 マトリクス設計と電力配慮
+
+- **物理カスケード接続**：4枚の $8 \times 8$ 剛性PCBを正方形に配置；
+- **シリアル信号経路**：
+  - ASRPRO のデジタル端子 `PA_2` から第1パネルの `DIN` へ入力；
+  - 第1パネルの `DOUT` を第2パネルの `DIN` へ直結し、第4パネルまで順次カスケードして合計256個の連続シフトレジスタチェーンを構築；
+- **電力完全性とIRドロップ対策**：256個のRGB LEDが最大輝度白点灯（$R=G=B=255$）した際の理論ピーク電流は：
+  
+  $$
+  I_{\text{peak}} = 256 \times (20\text{ mA} \times 3) = 15.36\text{ A}
+  $$
+  
+  配線抵抗による電圧降下と色ズレを防止するため、ファームウェア側で全体輝度を $20\% \sim 30\%$（定常平均負荷 $< 1.5\text{A}$）に制限し、電源母線入力部に $1000\mu\text{F}$ の低ESR電解コンデンサを並列接続。
+
+### 3.3 Bluetooth 4.0 BLE 無線通信サブシステム (HM-10)
+
+- **RF 仕様**：TI CC2541 ベースの HM-10 BLE 4.0 スレーブモジュール（2.4GHz ISM帯、GFSK変調）；
+- **UART インターフェース**：主制御基板のハードウェアシリアルポートとクロス接続（ボーレート 9600bps / 115200bps）。スマホアプリからBLE経由で1バイトのコマンド（例：`'E'` でスネークゲーム開始、`'W'` で笑顔表示、`'R'`/`'G'`/`'B'` で単色点灯）を送信。
+
+---
+
+## 4. 数理モデルと駆動アルゴリズムの導出 (Mathematical Formulations)
+
+### 4.1 WS2812B 単線式 Non-Return-to-Zero（NZR）パルス伝送方程式
+
+WS2812B の通信プロトコルは、ナノ秒オーダーの単線式 NZR 方式に基づきます（1ビット周期 $T_{\text{bit}} = 1.25\mu\text{s} \pm 150\text{ns}$）：
+- **論理 0 符号**：High期間 $T_{0\text{H}} = 400\text{ns} \pm 150\text{ns}$、Low期間 $T_{0\text{L}} = 850\text{ns} \pm 150\text{ns}$；
+- **論理 1 符号**：High期間 $T_{1\text{H}} = 850\text{ns} \pm 150\text{ns}$、Low期間 $T_{1\text{L}} = 400\text{ns} \pm 150\text{ns}$；
+- **リセットラッチ信号**：Low保持時間 $T_{\text{reset}} > 50\mu\text{s}$（ファームウェア基準値：$280\mu\text{s}$）。
+
+各ピクセルは24ビットの色彩データを **MSBファースト** かつ **G-R-B** の順序で受信します：
+
+$$
+\mathbf{C} = [G_7, G_6, \dots, G_0, R_7, R_6, \dots, R_0, B_7, B_6, \dots, B_0] \in \{0, 1\}^{24}
+$$
+
+カスケード総数 $N = 256$ のマトリクスにおいて、1フレームの全データ送信時間は：
+
+$$
+T_{\text{frame}} = N \cdot 24 \cdot T_{\text{bit}} + T_{\text{reset}} = 256 \times 24 \times 1.25\mu\text{s} + 280\mu\text{s} = 7.68\text{ ms} + 0.28\text{ ms} = 7.96\text{ ms}
+$$
+
+理論上の最大フレームレートは次式で表されます：
+
+$$
+f_{\text{refresh, max}} = \frac{1}{T_{\text{frame}}} = \frac{1}{7.96 \times 10^{-3}\text{ s}} \approx 125.6\text{ Hz}
+$$
+
+このフレームレートは人間の臨界融合頻度（$24\text{Hz}$）を大幅に上回り、ちらつきのない滑らかな表示を実現します。
+
+### 4.2 16×16 マトリクス蛇行配線空間座標変換方程式
+
+平面ディスプレイ上の直交座標を $(x, y)$ と定義します（$x \in [0, 15]$ は左から右、$y \in [0, 15]$ は上から下）。
+
+物理配線は配線長を最短化するため蛇行（Serpentine）反転配線を採用しているため、2次元論理座標 $(x, y)$ から1次元VRAM配列インデックス $\text{Index} \in [0, 255]$ への非線形変換は次式に従います：
+
+$$
+\text{Index}(x, y) = 
+\begin{cases} 
+16 \cdot y + x, & y \equiv 0 \pmod 2 \quad (\text{偶数行、正方向}) \\
+16 \cdot y + (15 - x), & y \equiv 1 \pmod 2 \quad (\text{奇数行、逆方向})
+\end{cases}
+$$
+
+ビットマップ描画時、行フォントベクトルを $\mathbf{W}_y = [b_{15}, b_{14}, \dots, b_0]$ とすると、各ピクセルの点灯判定は次式で行われます：
+
+$$
+\text{PixelColor}(x, y) = 
+\begin{cases} 
+(R, G, B), & (W_y \gg (15 - x)) \ \& \ 0x0001 = 1 \\
+(0, 0, 0), & (W_y \gg (15 - x)) \ \& \ 0x0001 = 0
+\end{cases}
+$$
+
+### 4.3 オフライン音声特徴量抽出とベイズ最大事後確率（MAP）推定
+
+ASRPRO 内蔵のNPUは、エッジ環境向けに最適化された音響モデル推論を実行します：
+1. **フレーム分割と窓関数**：サンプリング周波数 $f_s = 16\text{kHz}$、フレーム長 $25\text{ms}$、フレームシフト $10\text{ms}$、ハミング窓（Hamming Window）を適用；
+2. **メル周波数ケプストラム係数 (MFCC)**：DFT後のパワースペクトルに対し24チャネルのメルフィルタバンクを適用し、DCTにより13次元静的MFCCおよび1次・2次動的特徴量を算出し、39次元音響特徴ベクトル $\mathbf{O} = [\mathbf{o}_1, \dots, \mathbf{o}_T]$ を構築；
+3. **最大事後確率判定**：定義済み語彙辞書 $\mathcal{W}$ から最適な単語 $\hat{W}$ を探索：
+
+$$
+\hat{W} = \arg\max_{W \in \mathcal{W}} P(W | \mathbf{O}) = \arg\max_{W \in \mathcal{W}} \left[ \ln P(\mathbf{O} | W) + \lambda \ln P(W) \right]
+$$
+
+確信度スコアが $S(\hat{W}) \ge S_{\text{threshold}} = 0.85$ を満たすとき、有効な音声認識として固有のコマンドIDをマスター状態遷移機へ発行します。
+
+---
+
+## 5. ソフトウェア設計と天問Block / C++ 開発環境 (Software Systems)
+
+天問Block（TWenBlock）によるビジュアルプログラミングと、ネイティブC/C++による組み込みコーディングの両方に対応しています。
+
+<div align="center">
+
+| 天問Block オフライン音声認識語彙設定画面 | 16×16 マトリクス文字・パターンフォントジェネレータ |
+| :---: | :---: |
+| <img src="docs/images/software_tianwen_block_voice_config.png" width="480" alt="Tianwen Block Voice Config"> | <img src="docs/images/software_matrix_pattern_design.png" width="480" alt="Matrix Pattern Design"> |
+| **ビジュアル音声設定**：ウェイクワード、認識語彙（「電気をつけて」「笑顔を出して」等）および合成音声をGUIで設定 | **ピクセルパターン設計**：16×16 格子デザイナーで直感的にビットパターンを作成し、uint16 配列へ自動変換 |
+
+</div>
+
+- **天問Block ビジュアル開発**：ブロックを配置するだけで、音声コールバック、LED制御、ディレイ処理を自動的にC++ソースへ変換し、Type-C USB経由でワンクリック書き込み；
+- **ネイティブC/C++ コア状態遷移機**：[`src/asrpro_firmware/main_asrpro_ws2812.cpp`](file:///C:/workspace/Intelligent-Lighting-Control-System-Basic/src/asrpro_firmware/main_asrpro_ws2812.cpp) に完全なファームウェアを実装：
+  ```cpp
+  // 音声コールバック状態遷移機
+  void ASR_CODE() {
+    switch (snid) {
+      case 0: displaySpeakingAnimation(); break; // ウェイクアップ時：口の開閉アニメーション
+      case 1: displaySmileyAnimation();   break; // コマンド1: 動的笑顔を表示
+      case 2: displaycryAnimation();      break; // コマンド2: 涙を流す泣き顔を表示
+      case 3: displaySmileyAnimation();   break; // コマンド3: 音律に合わせた笑顔
+      case 4:                                   // コマンド4: 消灯・スタンバイ
+        ASR_WS2812_2.pixel_set_all_color(0, 0, 0);
+        ASR_WS2812_2.pixel_show();
+        break;
+    }
+  }
+  ```
+
+---
+
+## 6. システム主要諸元比較表 (System Specifications)
+
+| サブシステム項目 | 採用ハードウェア / 技術選定 | 詳細仕様および性能指標 |
 | :--- | :--- | :--- |
-| **主制御マイコン (MCU)** | STMicroelectronics STM32F103C8T6 | 32ビット ARM Cortex-M3 @ 72MHz, 64KB Flash, 20KB SRAM |
-| **無線通信モジュール** | Espressif ESP8266 (ESP-01/12F) | 802.11 b/g/n Wi-Fi, STA/AP 両対応, UART AT ブリッジ |
-| **光センサユニット** | 硫化カドミウム (CdS) セルモジュール | 分光感度ピーク $400 \sim 700\text{ nm}$、応答速度 $\le 30\text{ ms}$ |
-| **ADC サンプリング** | 内蔵 12-Bit SAR ADC (ADC1_IN1) | 変換速度 $1\text{ MSPS}$、PA1 端子、10回移動平均フィルタ |
-| **パワー駆動回路** | Nチャネル パワー MOSFET モジュール | 最大 24V / 5A DC 負荷駆動対応、フォトカプラ絶縁保護 |
-| **PWM 出力仕様** | 汎用タイマ TIM3 チャネル 2 (PA7) | キャリア周波数 $10\text{ kHz}$、7200段階高分解能、フリッカーレス |
-| **クラウドプロトコル** | 中国移動 OneNET IoT クラウド | EDP 長期接続認証、定期テレメトリ送信周期 $2.0\text{ 秒}$ |
-| **モバイル操作端末** | Android ネイティブアプリ (Java) | 透過型 TCP ソケット通信、デューティ比微調整 ($\pm 1000$) |
+| **主制御プロセッサ (MCU)** | 天問 51 ASRPRO (TW-ASR-Pro) | AI音声専用SoC、ニューラル推論コプロセッサ内蔵、動作周波数 240MHz |
+| **オフライン音声認識** | オンチップ音響モデル (NPU) | 最大150語彙、静音時認識精度 $\ge 98\%$、応答遅延 $< 0.2\text{s}$ |
+| **音響フロントエンド** | 差動エレクトレットマイク＋8002Aアンプ | ハードウェアAECエコーキャンセル内蔵、3W パワーアンプ、8段階音量調節 |
+| **フルカラーLEDマトリクス** | WS2812B-V5 スマートRGB LED | $8 \times 8$ パネル4枚による $16 \times 16$ 構成（256個）、1677万色、リフレッシュレート $> 120\text{Hz}$ |
+| **無線通信モジュール** | HM-10 BLE 4.0 Bluetooth スレーブ | 2.4GHz ISM帯、見通し通信距離 $> 10\text{m}$、通信レイテンシ $< 50\text{ms}$ |
+| **外装構造** | 天然無垢材額縁＋アクリルパネル | 外形寸法 約 $150 \times 150 \times 40\text{ mm}$、3M熱伝導シートによる強固な固定 |
+| **電源システム** | DC 5V 外部安定化電源 | 逆接続保護回路内蔵、動作電流 $0.2\text{A} \sim 2.0\text{A}$（ファームウェア輝度制限保護） |
+| **IoT 協調拡張機能** | STM32F103 + ESP8266 + OneNET | 12ビットADC光検出、TIM3 PWM調光、スマホApp遠隔制御をサポート |
 
 ---
 
-## 5. ディレクトリ構造 (Repository Layout)
+## 7. リポジトリ構成とファイル一覧 (Repository Layout)
 
 ```text
 Intelligent-Lighting-Control-System-Basic/
 ├── docs/
 │   └── images/
-│       ├── system_architecture.png       # システム全体アーキテクチャ・データフロー図
-│       ├── hardware_stm32.png            # STM32F103C8T6 制御コア基板実写
-│       ├── hardware_esp8266.png          # ESP8266 Wi-Fi 通信モジュール実写
-│       ├── hardware_led_control.png      # 信号調理・MOSFET パワー駆動基板実写
-│       ├── hardware_led_power.png        # LED 駆動用定電圧安定化電源モジュール
-│       ├── hardware_stlink.png           # ST-Link V2 SWD デバッガ実写
-│       ├── hardware_cp2102.png           # CP2102 USB-UART シリアル変換器
-│       ├── demo_android_app.png          # Android 操作画面スクリーンショット
-│       └── demo_onenet_cloud.png         # OneNET クラウド遠隔ダッシュボード
+│       ├── demo_hardware_enclosure_active.jpg      # 木製額縁実機点灯・ゲーム動作写真 (4064x3048)
+│       ├── demo_led_matrix_smile_face.jpg          # 16x16 笑顔表情ハイコントラスト実写写真 (2448x3264)
+│       ├── demo_hardware_wood_case.jpg             # 4象限レインボーグラデーション額縁写真 (3048x4064)
+│       ├── demo_hardware_matrix_glow.jpg           # LED点灯および内部配線詳細写真
+│       ├── hardware_asrpro_schematic.png           # ASRPRO 公式コア基板回路図 (MCU/MIC/SPK/AEC)
+│       ├── hardware_ws2812_cascade_schematic.png   # WS2812B カスケード接続・デカップリング回路図
+│       ├── hardware_asrpro_module.jpg              # ASRPRO ハードウェアモジュール外観写真
+│       ├── software_tianwen_block_voice_config.png # 天問Block 音声設定GUI画面キャプチャ
+│       ├── software_matrix_pattern_design.png      # 16x16 パターンビットマスク設計ツール
+│       ├── software_bluetooth_control_app.png      # Bluetooth スマホ操作アプリ画面
+│       ├── system_architecture.png                 # エンドツーエンドシステムトポロジ図
+│       ├── hardware_stm32.png                      # STM32F103C8T6 最小システム基板写真
+│       ├── hardware_esp8266.png                    # ESP8266 シリアル Wi-Fi モジュール写真
+│       ├── demo_android_app.png                    # Android 照明制御クライアント画面
+│       └── demo_onenet_cloud.png                   # OneNET IoT プラットフォーム画面
 ├── src/
-│   ├── stm32Project/                     # Keil uVision MDK-ARM 組み込みファームウェア
-│   │   ├── CMSIS/                        # ARM Cortex-M3 コア依存層
-│   │   ├── FWLIB/                        # STM32F10x 公式標準ペリフェラルライブラリ
-│   │   └── USER/                         # アプリケーション層ソースコード
-│   │       ├── main.c                    # メインループおよびモード遷移状態機械
-│   │       ├── adc.c / adc.h             # 12ビット ADC ドライバ・移動平均フィルタ
-│   │       ├── timer.c / timer.h         # TIM3 ハードウェア PWM 駆動ドライバ
-│   │       ├── esp8266.c / esp8266.h     # ESP8266 AT コマンド・TCP 透過エンジン
-│   │       ├── onenet.c / onenet.h       # OneNET クラウドパケットシリアライザ
-│   │       ├── edpkit.c / edpkit.h       # EDP プロトコルパッカ・パーサスタック
-│   │       ├── key.c / key.h             # タクトスイッチデバウンス・スキャン処理
-│   │       └── usart.c / usart.h         # USART1 ログおよび USART2 通信ドライバ
-│   └── androidControl/                   # Android Studio ネイティブアプリ
-│       ├── app/                          # アプリ UI レイアウトおよびソケット通信
-│       └── gradle/                       # Gradle ビルドスクリプト
-├── .gitignore                            # Keil MDK・Android ビルド中間生成物除外設定
-├── LICENSE                               # 公式 MIT オープンソースライセンス条文
-├── README.md                             # 中国語技術解説ドキュメント
-├── README_EN.md                          # 英語エンジニアリング仕様書
-└── README_JA.md                          # 日本語技術仕様書・学術ポートフォリオ
+│   ├── asrpro_firmware/
+│   │   ├── main_asrpro_ws2812.cpp                  # ASRPRO ネイティブC++ファームウェア (ASR割込+WS2812駆動)
+│   │   └── tianwen_block_projects/
+│   │       ├── 最终版本.hd                         # 天問Block 初級完全プロジェクトファイル
+│   │       ├── 贪吃蛇.hd                           # 16x16 マトリクス対話型スネークゲームプロジェクト
+│   │       ├── 蓝牙点灯.hd                         # HM-10 Bluetooth 通信制御プロジェクト
+│   │       ├── RGB.hd                              # フルカラーカラースペースグラデーションプロジェクト
+│   │       ├── 功能二.hd                           # モード2機能プロジェクト
+│   │       └── 功能三.hd                           # モード3機能プロジェクト
+│   └── stm32Project/                               # STM32+ESP8266+OneNET Keil プロジェクト
+│       ├── USER/                                   # メインループ、ADC計測、PWM調光、OneNET EDPスタック
+│       └── FWLIB/                                  # STM32F10x 公式標準ファームウェアライブラリ
+├── LICENSE                                         # MIT 公式オープンソースライセンス
+├── README.md                                       # 中国語技術仕様書・数理モデル解説
+├── README_EN.md                                    # 英語総合技術仕様書
+└── README_JA.md                                    # 日本語技術仕様書・学術ポートフォリオ
 ```
 
 ---
 
-## 6. ビルド・書き込みおよび操作手順 (Quick Start)
+## 8. クイックスタートガイド (Quick Start Guide)
 
-### 6.1 ピンアサイン定義 (Pin Mapping)
+### 8.1 ハードウェア配線対応表
 
-| 接続周辺デバイス | モジュール端子 | STM32 接続ピン | ハードウェア機能定義 |
-| :---: | :---: | :---: | :---: |
-| **光導電セル（CdS）** | AO (アナログ出力) | **PA1** | ADC1_IN1、環境照度分圧入力 |
-| **LED MOSFET ドライバ** | PWM_IN | **PA7** | TIM3_CH2、10kHz 高周波調光ライン |
-| **ESP8266 Wi-Fi** | TXD | **PA3** | USART2_RX、下りコマンド受信 |
-| **ESP8266 Wi-Fi** | RXD | **PA2** | USART2_TX、上りテレメトリ送信 |
-| **デバッグシリアル** | TXD / RXD | **PA9 / PA10** | USART1_TX / USART1_RX、115200bps 出力 |
-| **モード切替キー** | KEY0 ~ KEY3 | **PB0 ~ PB3** | 動作モード選択および手動調光入力 |
+| ASRPRO 端子 | 接続先外部モジュール | 機能・信号定義 |
+| :---: | :---: | :---: |
+| **5V** | WS2812B $V+$ / Bluetooth VCC | DC 5V システム電源バス |
+| **GND** | WS2812B $V-$ / Bluetooth GND | 共通グランド |
+| **PA_2** | WS2812B 第1パネル `DIN` | 単線式 800kHz NZR デジタル駆動信号 |
+| **TXD (UART0_TX)** | HM-10 Bluetooth `RXD` | 非同期シリアル送信（9600 bps） |
+| **RXD (UART0_RX)** | HM-10 Bluetooth `TXD` | 非同期シリアル受信 |
+| **SPKL+ / SPKL-** | 8Ω 2W 小型スピーカー | 8002A 差動BTLオーディオ出力 |
+| **MICL+ / MIC-** | エレクトレットコンデンサマイク | 差動音声信号入力 |
 
-### 6.2 ファームウェアのビルドとフラッシュ書き込み
+### 8.2 開発環境の導入とファームウェア書き込み
 
-1. **Keil uVision5 (MDK-ARM v5.x)** を起動し、`Keil.STM32F1xx_DFP` パックが導入されていることを確認します。
-2. プロジェクト `src/stm32Project/smartlamp.uvprojx` を開きます。
-3. **ST-Link V2** デバッガを開発基板の SWD ポート（SWCLK、SWDIO、GND、3V3）に接続します。
-4. **Rebuild** を実行してエラーおよび警告がないことを確認し、**Download**（F8）キーでチップ内 Flash メモリへ書き込みます。
+1. 公式サイトから **天問Block 2025（TWenBlock）** をダウンロードしてインストール；
+2. 天問Block を起動し、画面右上の「プロジェクトを開く」から [`src/asrpro_firmware/tianwen_block_projects/最终版本.hd`](file:///C:/workspace/Intelligent-Lighting-Control-System-Basic/src/asrpro_firmware/tianwen_block_projects/最终版本.hd) をインポート；
+3. Type-C USBケーブルで ASRPRO コアボードをPCに接続；
+4. ツールバーで対象ボード `ASRPRO-Core` と認識された CH340 COMポートを選択；
+5. **「コンパイル」** をクリックしてバイナリとC++ソースを生成；
+6. **「書き込み」** をクリックし、USB経由でチップ内蔵Flashへファームウェアを転送。
 
-### 6.3 動作モードと実証フロー
+### 8.3 操作・コマンドリファレンス
 
-1. **電源投入**：起動後、デフォルトで閉ループ自律適応調光モードが動作し、照度に応じて LED 輝度が自動調節されます。
-2. **キーによるモード遷移**：
-   - **KEY3** 押下：手動調光モードへ移行し、ボタン操作でデューティ比を段階的に増減。
-   - **KEY4** 押下：OneNET クラウドモードへ移行し、ESP8266 がルータ経由で接続し 2 秒周期で照度データをアップロード。
-   - **KEY5** 押下：Android 端末直接制御モードへ移行し、ESP8266 が TCP サーバとして待機しアプリからの指示を受信。
+1. **システム起動とウェイクアップ**：デバイスに向かってウェイクワード **「你好小天」**（ニーハオ・シャオティエン）と発話；
+   - スピーカーから応答音声「*在呢，主人*」（はい、ご主人様）が再生；
+   - 16×16 マトリクス上に発話口のアニメーションが表示；
+2. **表情インタラクション**：
+   - **「显示笑脸」**（笑顔を出して）：紫と白のピクセル笑顔アニメーションを点灯表示；
+   - **「不要哭」**（泣かないで）：マトリクスが涙を流すアニメーションを表示し、慰めの音声を再生；
+3. **照明モード制御**：
+   - **「打开灯光」**（電気をつけて）：4象限フルカラーレインボーグラデーションが点灯；
+   - **「关闭灯光」**（電気を消して）：全LEDが消灯し、省電力スタンバイへ移行；
+4. **Bluetooth 遠隔操作とスネークゲーム**：
+   - スマホのBluetoothシリアルアプリ（*BLE SPP* 等）で `HM-10` に接続；
+   - コマンド文字 `'E'` を送信するとスネークゲームが起動し、方向キーでヘビを操作可能。
 
 ---
 
-## 7. ライセンス (License)
+## 9. 開発チームと学術的謝辞 (Credits & Acknowledgments)
 
-本リポジトリは **MIT License** のもとで公開されています。詳細は [LICENSE](LICENSE) をご参照ください。
+- **開発チーム**：電子科技大学自動化工程学院 2023年次学部生工学実践グループ
+  - メンバー：学籍番号 2023060904025（劉浩然）、2023060909014 他
+- **指導教員**：電子科技大学自動化工程学院「総合カリキュラム設計（初級）」指導教員チーム
+- **オープンソース謝辞**：天問51（TWen51）コミュニティによる ASRPRO オープンソースSDKおよび技術支援に心より感謝申し上げます。
+
+---
+
+## 10. オープンソースライセンス (License)
+
+本プロジェクトのソースコードおよびドキュメントは **MIT License** のもとで公開されています。詳細については、プロジェクト直下の [LICENSE](LICENSE) ファイルをご参照ください。
