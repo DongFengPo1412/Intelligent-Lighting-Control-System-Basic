@@ -194,7 +194,7 @@ $$
 </div>
 
 - **天問Block ビジュアル開発**：ブロックを配置するだけで、音声コールバック、LED制御、ディレイ処理を自動的にC++ソースへ変換し、Type-C USB経由でワンクリック書き込み；
-- **ネイティブC/C++ コア状態遷移機**：[`src/asrpro_firmware/main_asrpro_ws2812.cpp`](file:///C:/workspace/Intelligent-Lighting-Control-System-Basic/src/asrpro_firmware/main_asrpro_ws2812.cpp) に完全なファームウェアを実装：
+- **ネイティブC/C++ コア状態遷移機**：[`src/asrpro_firmware/main_asrpro_ws2812.cpp`](src/asrpro_firmware/main_asrpro_ws2812.cpp) に完全なファームウェアを実装：
   ```cpp
   // 音声コールバック状態遷移機
   void ASR_CODE() {
@@ -280,7 +280,7 @@ Intelligent-Lighting-Control-System-Basic/
 ### 8.2 開発環境の導入とファームウェア書き込み
 
 1. 公式サイトから **天問Block 2025（TWenBlock）** をダウンロードしてインストール；
-2. 天問Block を起動し、画面右上の「プロジェクトを開く」から [`src/asrpro_firmware/tianwen_block_projects/最终版本.hd`](file:///C:/workspace/Intelligent-Lighting-Control-System-Basic/src/asrpro_firmware/tianwen_block_projects/最终版本.hd) をインポート；
+2. 天問Block を起動し、画面右上の「プロジェクトを開く」から [`src/asrpro_firmware/tianwen_block_projects/最终版本.hd`](src/asrpro_firmware/tianwen_block_projects/最终版本.hd) をインポート；
 3. Type-C USBケーブルで ASRPRO コアボードをPCに接続；
 4. ツールバーで対象ボード `ASRPRO-Core` と認識された CH340 COMポートを選択；
 5. **「コンパイル」** をクリックしてバイナリとC++ソースを生成；

@@ -196,7 +196,7 @@ $$
 </div>
 
 - **天问 Block 可视化架构**：开发者通过直观拖拽“语音识别”、“WS2812 控制”、“延时与动画”等积木，一键编译生成底层 Keil / GCC 兼容固件并经 Type-C USB 烧录至芯片内置 Flash；
-- **底层 C/C++ 核心状态机实现**：工程代码包含完整的动画与表情引擎，详见 [`src/asrpro_firmware/main_asrpro_ws2812.cpp`](file:///C:/workspace/Intelligent-Lighting-Control-System-Basic/src/asrpro_firmware/main_asrpro_ws2812.cpp)：
+- **底层 C/C++ 核心状态机实现**：工程代码包含完整的动画与表情引擎，详见 [`src/asrpro_firmware/main_asrpro_ws2812.cpp`](src/asrpro_firmware/main_asrpro_ws2812.cpp)：
   ```cpp
   // 核心语音回调状态机
   void ASR_CODE() {
@@ -282,7 +282,7 @@ Intelligent-Lighting-Control-System-Basic/
 ### 8.2 工具链安装与天问 Block 固件编译
 
 1. 从官方渠道下载并安装 **天问 Block 2025（TWenBlock）** 桌面开发套件；
-2. 双击打开 `天问 Block`，在界面右上角点击“打开项目”，导入位于 [`src/asrpro_firmware/tianwen_block_projects/最终版本.hd`](file:///C:/workspace/Intelligent-Lighting-Control-System-Basic/src/asrpro_firmware/tianwen_block_projects/最终版本.hd)；
+2. 双击打开 `天问 Block`，在界面右上角点击“打开项目”，导入位于 [`src/asrpro_firmware/tianwen_block_projects/最终版本.hd`](src/asrpro_firmware/tianwen_block_projects/最终版本.hd)；
 3. 使用 Type-C 数据线将 ASRPRO 核心板连接至电脑 USB 口；
 4. 在软件顶部工具栏选择目标板卡型号 `ASRPRO-Core`，选择识别到的 CH340 虚拟串口；
 5. 点击 **“编译固件”**，天问 Block 将自动生成机器模型、字模数据与 C++ 源码；

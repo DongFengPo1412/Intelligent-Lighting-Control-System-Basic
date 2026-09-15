@@ -194,7 +194,7 @@ The codebase supports dual-track development: visual Tianwen Block (TWenBlock) g
 </div>
 
 - **Tianwen Block Environment**: Enables rapid block-based composition of voice callbacks, LED animations, and delays, compiling automatically into optimized firmware written over Type-C USB;
-- **Native C/C++ Finite State Machine**: High-performance animation dispatching implemented in [`src/asrpro_firmware/main_asrpro_ws2812.cpp`](file:///C:/workspace/Intelligent-Lighting-Control-System-Basic/src/asrpro_firmware/main_asrpro_ws2812.cpp):
+- **Native C/C++ Finite State Machine**: High-performance animation dispatching implemented in [`src/asrpro_firmware/main_asrpro_ws2812.cpp`](src/asrpro_firmware/main_asrpro_ws2812.cpp):
   ```cpp
   // Core ASR callback finite state machine
   void ASR_CODE() {
@@ -280,7 +280,7 @@ Intelligent-Lighting-Control-System-Basic/
 ### 8.2 Toolchain Setup & Tianwen Block Compilation
 
 1. Download and install **Tianwen Block 2025 (TWenBlock)**;
-2. Launch Tianwen Block, click "Open Project" in the upper right, and import [`src/asrpro_firmware/tianwen_block_projects/最终版本.hd`](file:///C:/workspace/Intelligent-Lighting-Control-System-Basic/src/asrpro_firmware/tianwen_block_projects/最终版本.hd);
+2. Launch Tianwen Block, click "Open Project" in the upper right, and import [`src/asrpro_firmware/tianwen_block_projects/最终版本.hd`](src/asrpro_firmware/tianwen_block_projects/最终版本.hd);
 3. Connect the ASRPRO core board to your PC via a Type-C USB cable;
 4. Select the target board `ASRPRO-Core` and choose the corresponding CH340 COM port;
 5. Click **"Compile Firmware"** to generate machine code, bitmasks, and C++ source files;
