@@ -59,9 +59,9 @@ The platform constitutes a closed-loop pipeline spanning acoustic input, neural 
 
 ```mermaid
 flowchart TD
-    A["User Voice Command: 'Hello Tianwen' / 'Turn On Lights'"] -->|Differential Pickup| B["Electret Microphone + Preamp Circuit"]
-    B -->|Analog Audio| C["ASRPRO SoC: Hardware AEC & Neural NPU"]
-    C -->|Acoustic Model Matching| D{"Confidence Score: S >= S_th"}
+    A["User Voice Command: Hello Tianwen / Turn On Lights"] -->|Differential Pickup| B["Electret Microphone + Preamp Circuit"]
+    B -->|Analog Audio| C["ASRPRO SoC: Hardware AEC and Neural NPU"]
+    C -->|Acoustic Model Matching| D{"Confidence Score: S ≥ S_th"}
     D -->|Match Successful| E["8002A Audio PA + Speaker Playback"]
     D -->|Dispatch Command ID| F["Master State Machine: Animation / Mode / Game"]
     G["Smartphone BLE App / Controller"] -->|BLE 4.0 UART Pass-through| H["HM-10 Bluetooth Module (UART)"]
@@ -92,23 +92,23 @@ flowchart TD
 
 The core board is engineered around the high-efficiency ASRPRO SoC:
 - **Processor Core**: Integrated Tianwen 51 core running alongside a 32-bit DSP neural coprocessor, supported by high-capacity SPI Flash storing vocabulary models and TTS wave tables;
-- **Microphone Preamplifier Circuit (MIC)**: Leverages a low-noise voltage reference `MICBIAS` with capacitors $C_8, C_9$ ($0.1\,\mu\text{F}$) and resistors $R_3, R_4, R_7$ ($2.2\,\text{k}\Omega$ / $10\,\text{k}\Omega$) forming a balanced differential input topology to reject power supply common-mode noise;
-- **Audio Power Amplifier Subsystem (SPK)**: Features the **8002A** class-AB audio power amplifier (SOP-8), delivering 3W output into a $3\,\Omega$ speaker at 5V with less than 10% THD;
-- **Acoustic Echo Cancellation (AEC)**: Speaker positive terminal `SPKL+` is coupled via $C_{13}$ ($100\,\text{nF}$) and attenuator network $R_8, R_9$ back to `MICP_R`, actively canceling local playback audio so users can interrupt speech during active voice prompts.
+- **Microphone Preamplifier Circuit (MIC)**: Leverages a low-noise voltage reference `MICBIAS` with capacitors C8, C9 (0.1 μF) and resistors R3, R4, R7 (2.2 kΩ / 10 kΩ) forming a balanced differential input topology to reject power supply common-mode noise;
+- **Audio Power Amplifier Subsystem (SPK)**: Features the **8002A** class-AB audio power amplifier (SOP-8), delivering 3W output into a 3Ω speaker at 5V with less than 10% THD;
+- **Acoustic Echo Cancellation (AEC)**: Speaker positive terminal `SPKL+` is coupled via C13 (100 nF) and attenuator network R8, R9 back to `MICP_R`, actively canceling local playback audio so users can interrupt speech during active voice prompts.
 
 ### 3.2 WS2812B 16×16 Cascaded Matrix Engineering
 
-- **Physical Cascading**: Assembled from four $8 \times 8$ rigid PCB panels in a $2 \times 2$ quadrant arrangement;
+- **Physical Cascading**: Assembled from four 8×8 rigid PCB panels in a $2 \times 2$ quadrant arrangement;
 - **Serial Signal Propagation**:
   - Main signal line originates from ASRPRO digital pin `PA_2` into Panel 1 `DIN`;
   - Panel 1 `DOUT` bridges directly to Panel 2 `DIN`, continuing sequentially through Panel 4 to form a 256-pixel continuous shift chain;
-- **Power Integrity & IR-Drop Compensation**: Total theoretical peak current at full white ($R=G=B=255$) reaches:
+- **Power Integrity & IR-Drop Compensation**: Total theoretical peak current at full white (`R=G=B=255`) reaches:
   
   $$
-  I_{\text{peak}} = 256 \times (20\,\text{mA} \times 3) = 15.36\,\text{A}
+  I_{\text{peak}} = 256 \times (20\text{ mA} \times 3) = 15.36\text{ A}
   $$
   
-  To eliminate chromatic distortion and brownout resets caused by trace resistance, maximum global brightness is clamped in firmware between 20% ~ 30% (average load < 1.5A), supplemented by a $1000\,\mu\text{F}$ low-ESR electrolytic capacitor across the primary 5V rail.
+  To eliminate chromatic distortion and brownout resets caused by trace resistance, maximum global brightness is clamped in firmware between 20% ~ 30% (average load < 1.5A), supplemented by a 1000 μF low-ESR electrolytic capacitor across the primary 5V rail.
 
 ### 3.3 Wireless BLE 4.0 Subsystem (HM-10)
 
@@ -121,10 +121,10 @@ The core board is engineered around the high-efficiency ASRPRO SoC:
 
 ### 4.1 WS2812B Single-Wire Non-Return-to-Zero (NZR) Timing Equations
 
-WS2812B communication relies on nanosecond-accurate single-wire NZR pulses with nominal bit cycle $T_{\text{bit}} = 1.25\,\mu\text{s} \pm 150\,\text{ns}$:
-- **Logic 0 Code**: High time $T_{0\text{H}} = 400\,\text{ns} \pm 150\,\text{ns}$, Low time $T_{0\text{L}} = 850\,\text{ns} \pm 150\,\text{ns}$;
-- **Logic 1 Code**: High time $T_{1\text{H}} = 850\,\text{ns} \pm 150\,\text{ns}$, Low time $T_{1\text{L}} = 400\,\text{ns} \pm 150\,\text{ns}$;
-- **Latch Reset Pulse**: Low holding duration $T_{\text{reset}} > 50\,\mu\text{s}$ (firmware standard: $280\,\mu\text{s}$).
+WS2812B communication relies on nanosecond-accurate single-wire NZR pulses with nominal bit cycle `T_bit = 1.25 μs ± 150 ns`:
+- **Logic 0 Bit**: High duration `T_0H = 400 ns ± 150 ns`, low duration `T_0L = 850 ns ± 150 ns`;
+- **Logic 1 Bit**: High duration `T_1H = 850 ns ± 150 ns`, low duration `T_1L = 400 ns ± 150 ns`;
+- **Latch Reset Pulse**: Low holding duration `T_reset > 50 μs` (firmware standard: `280 μs`).
 
 Each LED consumes 24 bits transmitted **MSB first** in **G-R-B** sequence:
 
@@ -135,13 +135,13 @@ $$
 For $N = 256$ cascaded LEDs, total transmission time per frame is:
 
 $$
-T_{\text{frame}} = N \cdot 24 \cdot T_{\text{bit}} + T_{\text{reset}} = 256 \times 24 \times 1.25\,\mu\text{s} + 280\,\mu\text{s} = 7.68\,\text{ms} + 0.28\,\text{ms} = 7.96\,\text{ms}
+T_{\text{frame}} = N \cdot 24 \cdot T_{\text{bit}} + T_{\text{reset}} = 256 \times 24 \times 1.25\ \mu\text{s} + 280\ \mu\text{s} = 7.68\text{ ms} + 0.28\text{ ms} = 7.96\text{ ms}
 $$
 
 The theoretical maximum refresh rate without image tearing is:
 
 $$
-f_{\text{refresh, max}} = \frac{1}{T_{\text{frame}}} = \frac{1}{7.96 \times 10^{-3}\,\text{s}} \approx 125.6\,\text{Hz}
+f_{\text{refresh, max}} = \frac{1}{T_{\text{frame}}} = \frac{1}{7.96 \times 10^{-3}\text{ s}} \approx 125.6\text{ Hz}
 $$
 
 This frame rate significantly surpasses the persistence-of-vision limit (24Hz), ensuring flicker-free fluid animations.
@@ -173,12 +173,12 @@ $$
 ### 4.3 Offline Speech Acoustic Feature Extraction & Maximum A Posteriori (MAP) Matching
 
 The ASRPRO neural coprocessor executes on-device Hidden Markov Model & Deep Neural Network (HMM-DNN) inference:
-1. **Framing & Windowing**: Sample rate $f_s = 16\,\text{kHz}$, frame length $25\,\text{ms}$, frame hop $10\,\text{ms}$, windowed with a Hamming window;
+1. **Framing & Windowing**: Sample rate 16 kHz, frame length 25 ms, frame hop 10 ms, windowed with a Hamming window;
 2. **Mel-Frequency Cepstral Coefficients (MFCC)**: 24-channel triangular Mel filterbank convolution followed by Discrete Cosine Transform (DCT), deriving 13 static MFCCs plus velocity ($\Delta$) and acceleration ($\Delta\Delta$) components to build a 39-dimensional acoustic feature vector $\mathbf{O} = [\mathbf{o}_1, \dots, \mathbf{o}_T]$;
 3. **Maximum A Posteriori (MAP) Classification**:
 
 $$
-\hat{W} = \operatorname*{arg\,max}_{W \in \mathcal{W}} P(W \mid \mathbf{O}) = \operatorname*{arg\,max}_{W \in \mathcal{W}} \left[ \ln P(\mathbf{O} \mid W) + \lambda \ln P(W) \right]
+\hat{W} = \arg\max_{W \in \mathcal{W}} P(W \mid \mathbf{O}) = \arg\max_{W \in \mathcal{W}} \left[ \ln P(\mathbf{O} \mid W) + \lambda \ln P(W) \right]
 $$
 
 When confidence score $S(\hat{W}) \ge 0.85$, the engine validates recognition and triggers the corresponding command ID.
@@ -225,7 +225,7 @@ The codebase supports dual-track development: visual Tianwen Block (TWenBlock) g
 | **Master Processor (MCU)** | Tianwen 51 ASRPRO (TW-ASR-Pro) | AI Voice SoC with integrated neural inference coprocessor @ 240MHz |
 | **Speech Recognition Engine** | On-chip Acoustic Model (NPU) | Up to 150 offline command phrases, ≥ 98% accuracy in quiet rooms, < 0.2s latency |
 | **Acoustic Frontend & Audio** | Differential Electret Mic + 8002A PA | Hardware AEC, 3W class-AB power amplifier, 8-level dynamic digital volume |
-| **Full-Color LED Matrix** | WS2812B-V5 Smart RGB LEDs | Four $8 \times 8$ panels forming $16 \times 16$ (256 pixels), 24-bit color, refresh rate > 120Hz |
+| **Full-Color LED Matrix** | WS2812B-V5 Smart RGB LEDs | Four 8×8 panels forming 16×16 (256 pixels), 24-bit color, refresh rate > 120Hz |
 | **Wireless Connectivity** | HM-10 BLE 4.0 Bluetooth Slave | 2.4GHz ISM band, > 10m line-of-sight range, end-to-end latency < 50ms |
 | **Physical Enclosure** | Natural Solid Wood + Acrylic Panel | Dimensions ≈ 150 × 150 × 40 mm, 3M thermal adhesive matrix mounting |
 | **Power Supply** | DC 5V External Regulated Supply | Reverse-polarity protected, operating current 0.2A ~ 2.0A (brightness clamped) |
