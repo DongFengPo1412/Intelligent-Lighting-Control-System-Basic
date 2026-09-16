@@ -8,6 +8,7 @@
 [![LED: WS2812B 16x16](https://img.shields.io/badge/Matrix-WS2812B%2016x16%20RGB-green.svg?style=flat-square)](https://www.world-semi.com/)
 [![Wireless: HM-10 BLE](https://img.shields.io/badge/Wireless-HM--10%20BLE%204.0-orange.svg?style=flat-square)](docs/)
 [![Platform: Tianwen Block](https://img.shields.io/badge/Platform-Tianwen%20Block-blueviolet.svg?style=flat-square)](src/)
+[![Bilibili: Live Demo](https://img.shields.io/badge/Bilibili-Live%20Demo-fb7299.svg?style=flat-square&logo=bilibili&logoColor=white)](https://www.bilibili.com/video/BV1Y5N4zxEPX)
 [![Course: UESTC Comprehensive Project](https://img.shields.io/badge/UESTC-Comprehensive%20Curriculum%20Design-blueviolet.svg?style=flat-square)](https://www.uestc.edu.cn/)
 
 [**中文文档**](README.md) | [**English**](README_EN.md) | [**日本語**](README_JA.md)
@@ -47,6 +48,10 @@
 | **4象限レインボーフロー**：青紫、エメラルド、橙赤、シアンが滑らかに遷移するアンビエントライト | **ハードウェア実装工芸**：3M熱伝導両面テープによる固定、2.54mm標準ピンヘッダの半田付けと防振配線 |
 
 </div>
+
+* 完全な実機動作およびオフライン音声対話デモ動画は Bilibili にて公開されています：  
+  👉 **[Bilibili で実機デモ動画を視聴する：ASRPROに基づくスマートオフライン音声照明・音響視覚対話システム実機稼働全記録](https://www.bilibili.com/video/BV1Y5N4zxEPX)**  
+  *(ASRPRO オフライン音声起動・コマンド認識、16×16 フルカラー点陣の動的光エフェクト・レインボーグラデーション、表情アニメーション、スネークゲーム対話、Bluetooth リモコン操作を網羅)*
 
 ### 2.2 システム全体トポロジと音響視覚データフロー (System Architecture & Data Flow)
 

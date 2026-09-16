@@ -8,6 +8,7 @@
 [![LED: WS2812B 16x16](https://img.shields.io/badge/Matrix-WS2812B%2016x16%20RGB-green.svg?style=flat-square)](https://www.world-semi.com/)
 [![Wireless: HM-10 BLE](https://img.shields.io/badge/Wireless-HM--10%20BLE%204.0-orange.svg?style=flat-square)](docs/)
 [![Platform: Tianwen Block](https://img.shields.io/badge/Platform-Tianwen%20Block-blueviolet.svg?style=flat-square)](src/)
+[![Bilibili: Live Demo](https://img.shields.io/badge/Bilibili-Live%20Demo-fb7299.svg?style=flat-square&logo=bilibili&logoColor=white)](https://www.bilibili.com/video/BV1Y5N4zxEPX)
 [![Course: UESTC Comprehensive Project](https://img.shields.io/badge/UESTC-Comprehensive%20Curriculum%20Design-blueviolet.svg?style=flat-square)](https://www.uestc.edu.cn/)
 
 [**中文文档**](README.md) | [**English**](README_EN.md) | [**日本語**](README_JA.md)
@@ -47,6 +48,10 @@ To tackle these challenges, this project engineered a self-contained, highly int
 | **Dynamic Ambient Rhythm**: Smooth blue-purple, emerald, fiery orange, and cyan gradient flow | **Craftsmanship & Wiring**: Industrial 3M thermal tape fixation, 2.54mm pin header soldering, and organized wiring |
 
 </div>
+
+* The complete live demonstration video with offline voice interaction is available on Bilibili:  
+  👉 **[Watch Live Demo on Bilibili: Intelligent Lighting & Audio-Visual Interactive System Based on ASRPRO](https://www.bilibili.com/video/BV1Y5N4zxEPX)**  
+  *(Demonstrating ASRPRO offline voice wake-up, 16×16 RGB dynamic color gradients, emotional facial expressions, interactive Snake game, and BLE mobile control)*
 
 ### 2.2 System Architecture & End-to-End Data Flow
 

@@ -8,6 +8,7 @@
 [![LED: WS2812B 16x16](https://img.shields.io/badge/Matrix-WS2812B%2016x16%20RGB-green.svg?style=flat-square)](https://www.world-semi.com/)
 [![Wireless: HM-10 BLE](https://img.shields.io/badge/Wireless-HM--10%20BLE%204.0-orange.svg?style=flat-square)](docs/)
 [![Platform: Tianwen Block](https://img.shields.io/badge/Platform-Tianwen%20Block-blueviolet.svg?style=flat-square)](src/)
+[![Bilibili: Live Demo](https://img.shields.io/badge/Bilibili-Live%20Demo-fb7299.svg?style=flat-square&logo=bilibili&logoColor=white)](https://www.bilibili.com/video/BV1Y5N4zxEPX)
 [![Course: UESTC Comprehensive Project](https://img.shields.io/badge/UESTC-Comprehensive%20Curriculum%20Design-blueviolet.svg?style=flat-square)](https://www.uestc.edu.cn/)
 
 [**中文文档**](README.md) | [**English**](README_EN.md) | [**日本語**](README_JA.md)
@@ -47,6 +48,10 @@
 | **四象限彩虹渐变**：蓝紫、翠绿、炽橙、青蓝四色平滑光影律动，营造沉浸式环境光 | **点阵走线工艺**：高集成度 3M 导热胶固定、标准 2.54mm 排针镀锡焊接与防抖排线布局 |
 
 </div>
+
+* 完整实机功能与离线语音交互演示视频已发布在 Bilibili：  
+  👉 **[点击观看实机演示视频：基于 ASRPRO 的智能离线语音灯光音乐交互系统实机运行全纪录](https://www.bilibili.com/video/BV1Y5N4zxEPX)**  
+  *(涵盖 ASRPRO 离线语音唤醒与指令识别、16×16 点阵多模式动态光效与彩虹渐变、情感表情动画、贪吃蛇游戏互动及手机蓝牙无线调控)*
 
 ### 2.2 系统全景拓扑与声光数据流 (System Architecture & Data Flow)
 
