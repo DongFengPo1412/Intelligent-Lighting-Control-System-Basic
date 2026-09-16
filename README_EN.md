@@ -24,7 +24,7 @@ This project is an outstanding engineering capstone deliverable from the **"Comp
 In modern smart home ecosystems and ambient human-computer interaction (HCI), conventional lighting systems remain constrained to mechanical toggle switches or delayed mobile smartphone app operations. These existing architectures suffer from **one-dimensional interaction, a lack of affective emotional responsiveness, complete failure under network disconnection, and rigid illumination behavior**.
 
 To tackle these challenges, this project engineered a self-contained, highly integrated **Offline AI Voice & 16×16 WS2812B RGB Matrix Intelligent Audio-Visual Interactive System**:
-- **Edge Offline AI Voice Engine**: Centered on the **ASRPRO SoC** (Tianwen 51 architecture / Neural Processing Unit NPU), incorporating hardware Acoustic Echo Cancellation (AEC) and noise suppression. It executes sub-200ms spoken command parsing locally without Internet connectivity ($\ge 98\%$ recognition accuracy in quiet environments, $> 90\%$ in typical ambient noise);
+- **Edge Offline AI Voice Engine**: Centered on the **ASRPRO SoC** (Tianwen 51 architecture / Neural Processing Unit NPU), incorporating hardware Acoustic Echo Cancellation (AEC) and noise suppression. It executes sub-200ms spoken command parsing locally without Internet connectivity (≥ 98% recognition accuracy in quiet environments, > 90% in typical ambient noise);
 - **High-Density Full-Color Optical Matrix**: Four $8 \times 8$ WS2812B smart RGB modules are seamlessly cascaded into a **16×16 matrix (256 individual RGB pixels)**, rendering 24-bit true color (16.77 million colors) via single-line 800kHz Non-Return-to-Zero (NZR) pulses;
 - **Handcrafted Wooden Enclosure & Multi-Modal Interaction**: Integrated inside a natural solid-wood picture frame with an acrylic diffuser, supporting emotional facial animations (smiling greeting, weeping sorrow), 4-quadrant rainbow color flow, Bluetooth Low Energy (HM-10 BLE 4.0) wireless control, and an interactive Snake arcade game;
 - **Hardware-Software Co-Design Pipeline**: Dual-track software architecture supporting both visual block-based programming via Tianwen Block (TWenBlock) and bare-metal Native C++ firmware development, ensuring high system modularity and robustness.
@@ -58,16 +58,16 @@ To tackle these challenges, this project engineered a self-contained, highly int
 The platform constitutes a closed-loop pipeline spanning acoustic input, neural speech parsing, matrix graphics rendering, and BLE control:
 
 ```mermaid
-graph TD
-    A[User Voice Command: 'Hello Tianwen' / 'Turn On Lights'] -->|Differential Pickup| B[Electret Microphone + Preamp Circuit]
-    B -->|Analog Audio| C[ASRPRO SoC: Hardware AEC & Neural NPU]
-    C -->|Acoustic Model Matching| D{Confidence Score S > S_th}
-    D -->|Match Successful| E[8002A Audio PA + Speaker Playback]
-    D -->|Dispatch Command ID| F[Master State Machine: Animation / Mode / Game]
-    G[Smartphone BLE App / Controller] -->|BLE 4.0 UART Pass-through| H[HM-10 Bluetooth Module]
-    H -->|Command / Direction Stream| F
-    F -->|Single-Wire 800kHz NZR Pulses| I[WS2812B 16x16 Matrix (256 LEDs)]
-    I --> J[Dynamic Pixel Facial Expressions / Rainbow Ambient / Snake Game]
+flowchart TD
+    A["User Voice Command: 'Hello Tianwen' / 'Turn On Lights'"] -->|Differential Pickup| B["Electret Microphone + Preamp Circuit"]
+    B -->|Analog Audio| C["ASRPRO SoC: Hardware AEC & Neural NPU"]
+    C -->|Acoustic Model Matching| D{"Confidence Score: S >= S_th"}
+    D -->|Match Successful| E["8002A Audio PA + Speaker Playback"]
+    D -->|Dispatch Command ID| F["Master State Machine: Animation / Mode / Game"]
+    G["Smartphone BLE App / Controller"] -->|BLE 4.0 UART Pass-through| H["HM-10 Bluetooth Module (UART)"]
+    H -->|Command and Direction Stream| F
+    F -->|Single-Wire 800kHz NZR Pulses| I["WS2812B 16x16 Matrix (256 LEDs)"]
+    I --> J["Dynamic Pixel Facial Expressions / Rainbow Ambient / Snake Game"]
 ```
 
 1. **Acoustic Frontend & Conditioning**: High-sensitivity electret microphone captures voice inputs with analog pre-filtering and differential biasing into the on-chip 16-bit ADC;
@@ -92,9 +92,9 @@ graph TD
 
 The core board is engineered around the high-efficiency ASRPRO SoC:
 - **Processor Core**: Integrated Tianwen 51 core running alongside a 32-bit DSP neural coprocessor, supported by high-capacity SPI Flash storing vocabulary models and TTS wave tables;
-- **Microphone Preamplifier Circuit (MIC)**: Leverages a low-noise voltage reference `MICBIAS` with capacitors $C_8, C_9$ ($0.1\mu\text{F}$) and resistors $R_3, R_4, R_7$ ($2.2\text{k}\Omega / 10\text{k}\Omega$) forming a balanced differential input topology to reject power supply common-mode noise;
-- **Audio Power Amplifier Subsystem (SPK)**: Features the **8002A** class-AB audio power amplifier (SOP-8), delivering $3\text{W}$ output into a $3\Omega$ speaker at $5\text{V}$ with $< 10\%$ THD;
-- **Acoustic Echo Cancellation (AEC)**: Speaker positive terminal `SPKL+` is coupled via $C_{13}$ ($100\text{nF}$) and attenuator network $R_8, R_9$ back to `MICP_R`, actively canceling local playback audio so users can interrupt speech during active voice prompts.
+- **Microphone Preamplifier Circuit (MIC)**: Leverages a low-noise voltage reference `MICBIAS` with capacitors $C_8, C_9$ ($0.1\,\mu\text{F}$) and resistors $R_3, R_4, R_7$ ($2.2\,\text{k}\Omega$ / $10\,\text{k}\Omega$) forming a balanced differential input topology to reject power supply common-mode noise;
+- **Audio Power Amplifier Subsystem (SPK)**: Features the **8002A** class-AB audio power amplifier (SOP-8), delivering 3W output into a $3\,\Omega$ speaker at 5V with less than 10% THD;
+- **Acoustic Echo Cancellation (AEC)**: Speaker positive terminal `SPKL+` is coupled via $C_{13}$ ($100\,\text{nF}$) and attenuator network $R_8, R_9$ back to `MICP_R`, actively canceling local playback audio so users can interrupt speech during active voice prompts.
 
 ### 3.2 WS2812B 16×16 Cascaded Matrix Engineering
 
@@ -105,15 +105,15 @@ The core board is engineered around the high-efficiency ASRPRO SoC:
 - **Power Integrity & IR-Drop Compensation**: Total theoretical peak current at full white ($R=G=B=255$) reaches:
   
   $$
-  I_{\text{peak}} = 256 \times (20\text{ mA} \times 3) = 15.36\text{ A}
+  I_{\text{peak}} = 256 \times (20\,\text{mA} \times 3) = 15.36\,\text{A}
   $$
   
-  To eliminate chromatic distortion and brownout resets caused by trace resistance, maximum global brightness is clamped in firmware between $20\% \sim 30\%$ (average load $< 1.5\text{A}$), supplemented by a $1000\mu\text{F}$ low-ESR electrolytic capacitor across the primary 5V rail.
+  To eliminate chromatic distortion and brownout resets caused by trace resistance, maximum global brightness is clamped in firmware between 20% ~ 30% (average load < 1.5A), supplemented by a $1000\,\mu\text{F}$ low-ESR electrolytic capacitor across the primary 5V rail.
 
 ### 3.3 Wireless BLE 4.0 Subsystem (HM-10)
 
-- **RF Specifications**: Based on the TI CC2541 BLE 4.0 transceiver operating in the $2.4\text{GHz}$ ISM band with GFSK modulation;
-- **UART Interface**: Connects to the host controller UART at $9600\text{bps}$ / $115200\text{bps}$. Mobile apps transmit single-byte control payloads (e.g., `'E'` launches the Snake game, `'W'` triggers the smiling face, `'R'`/`'G'`/`'B'` sets solid colors).
+- **RF Specifications**: Based on the TI CC2541 BLE 4.0 transceiver operating in the 2.4GHz ISM band with GFSK modulation;
+- **UART Interface**: Connects to the host controller UART at 9600 bps / 115200 bps. Mobile apps transmit single-byte control payloads (e.g., `'E'` launches the Snake game, `'W'` triggers the smiling face, `'R'`/`'G'`/`'B'` sets solid colors).
 
 ---
 
@@ -121,10 +121,10 @@ The core board is engineered around the high-efficiency ASRPRO SoC:
 
 ### 4.1 WS2812B Single-Wire Non-Return-to-Zero (NZR) Timing Equations
 
-WS2812B communication relies on nanosecond-accurate single-wire NZR pulses with nominal bit cycle $T_{\text{bit}} = 1.25\mu\text{s} \pm 150\text{ns}$:
-- **Logic 0 Code**: High time $T_{0\text{H}} = 400\text{ns} \pm 150\text{ns}$, Low time $T_{0\text{L}} = 850\text{ns} \pm 150\text{ns}$;
-- **Logic 1 Code**: High time $T_{1\text{H}} = 850\text{ns} \pm 150\text{ns}$, Low time $T_{1\text{L}} = 400\text{ns} \pm 150\text{ns}$;
-- **Latch Reset Pulse**: Low holding duration $T_{\text{reset}} > 50\mu\text{s}$ (firmware standard: $280\mu\text{s}$).
+WS2812B communication relies on nanosecond-accurate single-wire NZR pulses with nominal bit cycle $T_{\text{bit}} = 1.25\,\mu\text{s} \pm 150\,\text{ns}$:
+- **Logic 0 Code**: High time $T_{0\text{H}} = 400\,\text{ns} \pm 150\,\text{ns}$, Low time $T_{0\text{L}} = 850\,\text{ns} \pm 150\,\text{ns}$;
+- **Logic 1 Code**: High time $T_{1\text{H}} = 850\,\text{ns} \pm 150\,\text{ns}$, Low time $T_{1\text{L}} = 400\,\text{ns} \pm 150\,\text{ns}$;
+- **Latch Reset Pulse**: Low holding duration $T_{\text{reset}} > 50\,\mu\text{s}$ (firmware standard: $280\,\mu\text{s}$).
 
 Each LED consumes 24 bits transmitted **MSB first** in **G-R-B** sequence:
 
@@ -135,16 +135,16 @@ $$
 For $N = 256$ cascaded LEDs, total transmission time per frame is:
 
 $$
-T_{\text{frame}} = N \cdot 24 \cdot T_{\text{bit}} + T_{\text{reset}} = 256 \times 24 \times 1.25\mu\text{s} + 280\mu\text{s} = 7.68\text{ ms} + 0.28\text{ ms} = 7.96\text{ ms}
+T_{\text{frame}} = N \cdot 24 \cdot T_{\text{bit}} + T_{\text{reset}} = 256 \times 24 \times 1.25\,\mu\text{s} + 280\,\mu\text{s} = 7.68\,\text{ms} + 0.28\,\text{ms} = 7.96\,\text{ms}
 $$
 
 The theoretical maximum refresh rate without image tearing is:
 
 $$
-f_{\text{refresh, max}} = \frac{1}{T_{\text{frame}}} = \frac{1}{7.96 \times 10^{-3}\text{ s}} \approx 125.6\text{ Hz}
+f_{\text{refresh, max}} = \frac{1}{T_{\text{frame}}} = \frac{1}{7.96 \times 10^{-3}\,\text{s}} \approx 125.6\,\text{Hz}
 $$
 
-This frame rate significantly surpasses the persistence-of-vision limit ($24\text{Hz}$), ensuring flicker-free fluid animations.
+This frame rate significantly surpasses the persistence-of-vision limit (24Hz), ensuring flicker-free fluid animations.
 
 ### 4.2 16×16 Matrix Serpentine Coordinate Transformation
 
@@ -155,8 +155,8 @@ Because physical board routing alternates direction on adjacent rows to minimize
 $$
 \text{Index}(x, y) = 
 \begin{cases} 
-16 \cdot y + x, & \text{for } y \equiv 0 \pmod 2 \quad (\text{even rows, forward}) \\
-16 \cdot y + (15 - x), & \text{for } y \equiv 1 \pmod 2 \quad (\text{odd rows, reverse})
+16y + x, & (y \bmod 2 = 0) \\
+16y + (15 - x), & (y \bmod 2 = 1)
 \end{cases}
 $$
 
@@ -165,23 +165,23 @@ For bitmap rendering, let row glyph vector be $\mathbf{W}_y = [b_{15}, b_{14}, \
 $$
 \text{PixelColor}(x, y) = 
 \begin{cases} 
-(R, G, B), & \text{if } (W_y \gg (15 - x)) \ \& \ 0x0001 = 1 \\
-(0, 0, 0), & \text{if } (W_y \gg (15 - x)) \ \& \ 0x0001 = 0
+(R, G, B), & ((W_y \gg (15 - x)) \land 1) = 1 \\
+(0, 0, 0), & ((W_y \gg (15 - x)) \land 1) = 0
 \end{cases}
 $$
 
 ### 4.3 Offline Speech Acoustic Feature Extraction & Maximum A Posteriori (MAP) Matching
 
 The ASRPRO neural coprocessor executes on-device Hidden Markov Model & Deep Neural Network (HMM-DNN) inference:
-1. **Framing & Windowing**: Sample rate $f_s = 16\text{kHz}$, frame length $25\text{ms}$, frame hop $10\text{ms}$, windowed with a Hamming window;
+1. **Framing & Windowing**: Sample rate $f_s = 16\,\text{kHz}$, frame length $25\,\text{ms}$, frame hop $10\,\text{ms}$, windowed with a Hamming window;
 2. **Mel-Frequency Cepstral Coefficients (MFCC)**: 24-channel triangular Mel filterbank convolution followed by Discrete Cosine Transform (DCT), deriving 13 static MFCCs plus velocity ($\Delta$) and acceleration ($\Delta\Delta$) components to build a 39-dimensional acoustic feature vector $\mathbf{O} = [\mathbf{o}_1, \dots, \mathbf{o}_T]$;
 3. **Maximum A Posteriori (MAP) Classification**:
 
 $$
-\hat{W} = \arg\max_{W \in \mathcal{W}} P(W | \mathbf{O}) = \arg\max_{W \in \mathcal{W}} \left[ \ln P(\mathbf{O} | W) + \lambda \ln P(W) \right]
+\hat{W} = \operatorname*{arg\,max}_{W \in \mathcal{W}} P(W \mid \mathbf{O}) = \operatorname*{arg\,max}_{W \in \mathcal{W}} \left[ \ln P(\mathbf{O} \mid W) + \lambda \ln P(W) \right]
 $$
 
-When confidence score $S(\hat{W}) \ge S_{\text{threshold}} = 0.85$, the engine validates recognition and triggers the corresponding command ID.
+When confidence score $S(\hat{W}) \ge 0.85$, the engine validates recognition and triggers the corresponding command ID.
 
 ---
 
@@ -223,12 +223,12 @@ The codebase supports dual-track development: visual Tianwen Block (TWenBlock) g
 | Subsystem Dimension | Hardware Component / Architecture | Detailed Specifications & Metrics |
 | :--- | :--- | :--- |
 | **Master Processor (MCU)** | Tianwen 51 ASRPRO (TW-ASR-Pro) | AI Voice SoC with integrated neural inference coprocessor @ 240MHz |
-| **Speech Recognition Engine** | On-chip Acoustic Model (NPU) | Up to 150 offline command phrases, $\ge 98\%$ accuracy in quiet rooms, $< 0.2\text{s}$ latency |
+| **Speech Recognition Engine** | On-chip Acoustic Model (NPU) | Up to 150 offline command phrases, ≥ 98% accuracy in quiet rooms, < 0.2s latency |
 | **Acoustic Frontend & Audio** | Differential Electret Mic + 8002A PA | Hardware AEC, 3W class-AB power amplifier, 8-level dynamic digital volume |
-| **Full-Color LED Matrix** | WS2812B-V5 Smart RGB LEDs | Four $8 \times 8$ panels forming $16 \times 16$ (256 pixels), 24-bit color, refresh rate $> 120\text{Hz}$ |
-| **Wireless Connectivity** | HM-10 BLE 4.0 Bluetooth Slave | 2.4GHz ISM band, $> 10\text{m}$ line-of-sight range, end-to-end latency $< 50\text{ms}$ |
-| **Physical Enclosure** | Natural Solid Wood + Acrylic Panel | Dimensions $\approx 150 \times 150 \times 40\text{ mm}$, 3M thermal adhesive matrix mounting |
-| **Power Supply** | DC 5V External Regulated Supply | Reverse-polarity protected, operating current $0.2\text{A} \sim 2.0\text{A}$ (brightness clamped) |
+| **Full-Color LED Matrix** | WS2812B-V5 Smart RGB LEDs | Four $8 \times 8$ panels forming $16 \times 16$ (256 pixels), 24-bit color, refresh rate > 120Hz |
+| **Wireless Connectivity** | HM-10 BLE 4.0 Bluetooth Slave | 2.4GHz ISM band, > 10m line-of-sight range, end-to-end latency < 50ms |
+| **Physical Enclosure** | Natural Solid Wood + Acrylic Panel | Dimensions ≈ 150 × 150 × 40 mm, 3M thermal adhesive matrix mounting |
+| **Power Supply** | DC 5V External Regulated Supply | Reverse-polarity protected, operating current 0.2A ~ 2.0A (brightness clamped) |
 | **Toolchain & Software** | Tianwen Block (TWenBlock) / GCC | Block-based visual workflow and native C/C++ firmware compilation/flashing via USB |
 
 ---
@@ -274,8 +274,8 @@ Intelligent-Lighting-Control-System-Basic/
 
 | ASRPRO Pin | External Module / Connection Target | Electrical Function |
 | :---: | :---: | :---: |
-| **5V** | WS2812B Matrix $V+$ / Bluetooth VCC | DC 5V System Power Bus |
-| **GND** | WS2812B Matrix $V-$ / Bluetooth GND | Power Ground Reference |
+| **5V** | WS2812B Matrix V+ / Bluetooth VCC | DC 5V System Power Bus |
+| **GND** | WS2812B Matrix V- / Bluetooth GND | Power Ground Reference |
 | **PA_2** | WS2812B Panel 1 `DIN` | Single-Wire 800kHz NZR Data Drive |
 | **TXD (UART0_TX)** | HM-10 Bluetooth `RXD` | Asynchronous Serial Transmit (9600 baud) |
 | **RXD (UART0_RX)** | HM-10 Bluetooth `TXD` | Asynchronous Serial Receive |
