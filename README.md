@@ -15,6 +15,12 @@
 
 </div>
 
+> 💡 **系列项目工程演进 (Project Evolution Roadmap)**  
+> 本系统是**智能光影交互系统三部曲之【初阶基石】**。三阶段工程完整展现了从嵌入式硬件原型到多模态具身智能的系统级演进成长脉络：
+> - 🟢 **初阶（本项目）**：[Intelligent-Lighting-Control-System-Basic](https://github.com/DongFengPo1412/Intelligent-Lighting-Control-System-Basic) —— ASRPRO 离线语音 SoC + 16×16 WS2812B 矩阵 + HM-10 BLE，奠定离线声学感知与点阵声光交互物理原型；
+> - 🟡 **中阶（进阶篇）**：[Intelligent-Lighting-Control-System-Mid](https://github.com/DongFengPo1412/Intelligent-Lighting-Control-System-Mid) —— 演进至 ESP32-S3 + ESP32-WROOM-32 双单片机非对称硬件调度 + Jetson Nano 边缘 Linux AI 视觉协同 + 24kHz 对数 FFT 音频流随动；
+> - 🔴 **高阶（旗舰篇）**：[Intelligent-Lighting-Control-System-Pro](https://github.com/DongFengPo1412/Intelligent-Lighting-Control-System-Pro) —— 跃迁至单芯片 ESP32-S3 原生 RMT 硬件驱动归一化重构 + 本地私有化大模型具身 Agent（Qwen2.5 / MCP）+ PC 算力中枢 3D 视觉手势视线追踪。
+
 ---
 
 ## 1. 项目背景与学术渊源 (Academic Heritage & Background)

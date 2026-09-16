@@ -15,6 +15,12 @@
 
 </div>
 
+> 💡 **Project Evolution Roadmap**  
+> This project represents the **Foundational Baseline (Basic Stage)** in the **Intelligent Audio-Visual Lighting Interactive Trilogy**. The three-stage progressive evolution roadmap spans from embedded hardware prototypes to multimodal embodied AI:
+> - 🟢 **Basic Stage (This Project)**: [Intelligent-Lighting-Control-System-Basic](https://github.com/DongFengPo1412/Intelligent-Lighting-Control-System-Basic) —— ASRPRO Edge AI Voice SoC + 16×16 WS2812B Matrix + HM-10 BLE, establishing the physical baseline for offline acoustic sensing and matrix illumination;
+> - 🟡 **Mid Stage (Intermediate)**: [Intelligent-Lighting-Control-System-Mid](https://github.com/DongFengPo1412/Intelligent-Lighting-Control-System-Mid) —— Evolves to an asymmetric dual-MCU scheduling architecture (ESP32-S3 + ESP32-WROOM-32) + Jetson Nano Edge Linux AI Vision + 24kHz Logarithmic FFT Audio Streaming;
+> - 🔴 **Pro Stage (Advanced)**: [Intelligent-Lighting-Control-System-Pro](https://github.com/DongFengPo1412/Intelligent-Lighting-Control-System-Pro) —— Leaps to a unified single-chip ESP32-S3 architecture with native RMT DMA engine + Local Private Embodied Agent (Qwen2.5 / MCP) + PC-accelerated 3D spatial gesture and gaze tracking.
+
 ---
 
 ## 1. Academic Heritage & Project Background

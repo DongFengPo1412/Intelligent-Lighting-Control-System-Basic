@@ -15,6 +15,12 @@
 
 </div>
 
+> 💡 **シリーズプロジェクトの成長ロードマップ (Project Evolution Roadmap)**  
+> 本システムは、**スマート光影インタラクティブシステム3部作の【初級・基盤フェーズ】**です。組み込みハードウェアプロトタイプからマルチモーダル身体性AIへと至る体系的な進化の軌跡を示しています：
+> - 🟢 **初級（本プロジェクト）**：[Intelligent-Lighting-Control-System-Basic](https://github.com/DongFengPo1412/Intelligent-Lighting-Control-System-Basic) —— ASRPRO オフライン音声SoC + 16×16 WS2812B マトリクス + HM-10 BLE、オフライン音響知覚とドットマトリクス光影の物理プロトタイプを確立；
+> - 🟡 **中級（進階フェーズ）**：[Intelligent-Lighting-Control-System-Mid](https://github.com/DongFengPo1412/Intelligent-Lighting-Control-System-Mid) —— ESP32-S3 + ESP32-WROOM-32 非対称デュアルマイコンスケジューリング + Jetson Nano エッジLinux AIビジョン協調 + 24kHz 対数FFT音響ストリーム追従へ進化；
+> - 🔴 **上級（フラッグシップ）**：[Intelligent-Lighting-Control-System-Pro](https://github.com/DongFengPo1412/Intelligent-Lighting-Control-System-Pro) —— 単一ESP32-S3チップのネイティブRMTハードウェアDMA統合 + ローカルプライベート大規模言語モデル身体性Agent（Qwen2.5 / MCP）+ PC算力センター3D空間ジェスチャー・視線追跡へ飛躍。
+
 ---
 
 ## 1. 学術的背景とプロジェクト沿革 (Academic Heritage & Background)
