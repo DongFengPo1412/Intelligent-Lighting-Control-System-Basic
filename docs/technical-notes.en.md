@@ -70,7 +70,7 @@ q=2\left\lfloor\frac{y}{8}\right\rfloor+\left\lfloor\frac{x}{8}\right\rfloor,\qq
 i=64q+8(y\bmod8)+(x\bmod8)
 ```
 
-For example, (8,0) maps to block index 64. Earlier `displayPattern` uses `y*16+x`, giving 8 for the same coordinate. Thus the files do not all share an identical mapping. RGB output is split into four blocks but indexes 16×16 arrays with 1–16; it cannot be declared equivalent to the zero-based equation before correction.
+For (8,0), block mapping gives 64 while the earlier linear `displayPattern` gives 8. Revised RGB drawing shares the game's zero-based block formula, but monochrome drawing keeps its linear mapping. Check wiring for the selected program.
 
 ### Driver and theoretical wire time
 
@@ -100,9 +100,9 @@ There is no audio sampling, FFT, loudness envelope, or beat extraction. The feat
 | Initialization | `resetGame()` creates three segments, starts moving right, generates food, and resets the score. |
 | Reception | `UART_RX` reads available characters at 115200 bps, with a 2 ms outer-loop delay. |
 | Updates | `app` calls `moveSnake()` when started, then delays 300 ms; this is not a strictly fixed 300 ms period. |
-| Direction guard | Current dx/dy rejects a direct reverse command; multiple turns within one game step need boundary testing. |
+| Direction guard | At each game tick, apply the latest request unless it reverses the last committed direction. |
 | Boundary wrapping | Coordinates outside 0–15 wrap to the opposite edge, equivalent to the equation below. |
-| Food placement | Random coordinates are rejected when `isOnSnake` finds an occupied cell. |
+| Food placement | Enumerate unoccupied cells and select one; return completion if none remain. |
 | Motion/growth | Segments follow the head; eating appends the old tail position and increments score. |
 | End feedback | Self-collision stops play, flashes red three times at 300 ms on/off, then prints the score to serial. |
 
@@ -110,7 +110,7 @@ There is no audio sampling, FFT, loudness envelope, or beat extraction. The feat
 x'=(x+\Delta x+16)\bmod16,\qquad y'=(y+\Delta y+16)\bmod16
 ```
 
-Both tasks use priority 4 and stack-depth arguments of 256; stack units depend on the SDK. Direction/state use shared variables, not an application-level ring queue, mutex, or explicit atomic updates. Separate tasks support ongoing reception, but visible response still depends on game updates and driver time; no measured communication latency follows from these delays alone.
+Both tasks retain priority 4 and stack-depth arguments of 256, with units defined by the SDK. UART publishes atomic single-slot requests rather than writing dx/dy or resetting the snake. Later direction input can overwrite earlier input. The 300 ms update delay and 2 ms receive polling are not measured response latency.
 
 `E` starts/restarts only while the game is stopped and does not reset active play. Archived `showScore()` uses `Serial.print/println`, with no numeric bitmap drawing. Voice start, LED scoring, and unified mode switching need the matching demonstration code.
 
@@ -121,15 +121,15 @@ Both tasks use priority 4 and stack-depth arguments of 256; stack units depend o
 | Item | Current evidence | Documentation/reproduction treatment |
 | :--- | :--- | :--- |
 | Final demonstration firmware | Feature development versions are preserved; a complete combined version is unconfirmed. | Describe files individually; do not promise one project covers every demonstration. |
-| Animation delays | `uint8_t frameDelay[]` contains out-of-range values such as 500 and 300. | Standard C++ list initialization has narrowing restrictions. If the toolchain permits truncation, 500→244 and 300→44; the literals do not establish actual 1600/3700 ms duration. |
-| RGB indices | 16×16 arrays are accessed with 1–16. | Out-of-bounds access; correct indexing and verify display before claiming accurate rendering. |
-| Mapping differences | Linear, block, and problematic RGB access coexist. | Verify coordinates per program rather than presenting them as one implementation. |
-| Game boundaries | Food retries lack a full-board exit; tasks share state. | Add full-board handling and check rapid-input/shared-state cases before stability validation. |
+| Animation delays | `uint16_t frameDelay[]` retains declared 300/500 values. | Correct types do not establish measured frame timing. |
+| RGB indices | Arrays use 0–15, preserving panel order. | Physical orientation remains to be checked. |
+| Mapping differences | Monochrome linear and RGB/game block mappings coexist. | Verify coordinates per program rather than presenting them as one implementation. |
+| Game boundaries | Bounded food selection, full-capacity exit, atomic input slots and game-task-owned state. | Offline boundary tests pass; vendor SDK/task scheduling are untested. |
 | Music/mode exit | Long loops and blocking delays exist. | Chip AEC support alone does not prove interruption in every mode. |
 | Performance | Course demonstration and subjective feedback, without reproducible controlled test records. | Do not claim 98% recognition, fixed latency, 10 m range, measured refresh, or current figures. |
 | Power/brightness | USB power is participant-confirmed; programs contain values such as 5, 50, or graphical configuration 255. | These are not one adjustable-brightness feature and do not establish current, voltage drop, or supply headroom. |
 
-This documentation pass preserves the source. It does not repair these issues, rebuild/flash firmware, or perform hardware acceptance tests. Missing archive paths do not disprove historical demonstrations, and demonstrations do not replace reproduction of current source.
+Seven offline cases execute functions extracted from the real .hd source with Clang/WebAssembly: unique pixel mapping, RGB bounds, one/free-no-cell cases, growth to capacity and rapid turns; source delay declarations are also compiled. The complete Tianwen SDK was not built or flashed and hardware was not retested. The target compiler must support GCC/Clang `__atomic` builtins; vendor SDK and task stack behavior remain unverified.
 
 <a id="references"></a>
 

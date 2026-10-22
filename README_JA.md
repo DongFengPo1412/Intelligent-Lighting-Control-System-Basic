@@ -80,3 +80,9 @@ Basicは定型語彙と応答、プログラム内の固定輝度、近距離Blu
 [技術ノート](docs/technical-notes.ja.md) · [導入と操作](docs/setup.ja.md) · [Mid](https://github.com/DongFengPo1412/Intelligent-Lighting-Control-System-Mid) · [Pro](https://github.com/DongFengPo1412/Intelligent-Lighting-Control-System-Pro)
 
 本リポジトリのアプリコードは[MITライセンス](LICENSE)です。天問Block、ASRPRO SDK、第三者のハードウェア資料、音声・画像素材はそれぞれの利用条件に従います。
+
+## 保守と検証
+
+2026-10版では主C++と表情 .hd のフレーム遅延を `uint16_t` にし、4枚の順序を維持してRGB添字を0始まりに修正しました。Snakeは有限の空きマス列挙を使い、満盤で終了してシリアル得点を表示し、添字256へ追記しません。UARTは開始・最新方向の要求のみを原子的に公開し、ゲームタスクが状態を専有して各ステップで直前方向への逆転を拒否します。最新値1スロットでありFIFOではありません。
+
+実際の .hd から抽出した関数をClang/WebAssemblyで実行し、画素写像の一意性、RGB境界、空き1マス・満盤、容量までの成長、連続転向の7組を確認しました。元の遅延宣言もコンパイルしています。天問SDK全体のビルド、書込、実機再試験は未実施です。対象コンパイラにGCC/Clangの `__atomic` 組込みが必要で、SDK・スタック・スケジューリングは未検証です。

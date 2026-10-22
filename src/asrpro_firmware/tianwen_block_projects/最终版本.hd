@@ -508,44 +508,11 @@ void displaycolorfulPattern(const unsigned char r[16][16],const unsigned char g[
 {
   ASR_WS2812_2.setBrightness(5);
   ASR_WS2812_2.pixel_set_all_color(0, 0, 0); // 先清空所有 LED
-  for (int y = 1; y <= 8; y++) 
-  {
-    for (int x = 1; x <= 8; x++) 
-    {
-      { // 注意位顺序可能需要调整
-        int index = (y - 1) * 8 + x - 1;
-        ASR_WS2812_2.pixel_set_color(index, r[y][x], g[y][x], b[y][x]);
-      }
-    }
-  }
-  for (int y = 1; y <= 8; y++) 
-  {
-    for (int x = 9; x <= 16; x++) 
-    {
-      { // 注意位顺序可能需要调整
-        int index = (y - 1) * 8 + x - 8 + 63;
-        ASR_WS2812_2.pixel_set_color(index, r[y][x], g[y][x], b[y][x]);
-      }
-    }
-  }
-  for (int y = 9; y <= 16; y++) 
-  {
-    for (int x = 1; x <= 8; x++)  
-    {
-      { // 注意位顺序可能需要调整
-        int index = (y - 9) * 8 + x + 127;
-        ASR_WS2812_2.pixel_set_color(index, r[y][x], g[y][x], b[y][x]);
-      }
-    }
-  }
-  for (int y = 9; y <= 16; y++)  
-  {
-    for (int x = 9; x <= 16; x++) 
-    {
-      { // 注意位顺序可能需要调整
-        int index = (y - 9) * 8 + x - 8 + 191;
-        ASR_WS2812_2.pixel_set_color(index, r[y][x], g[y][x], b[y][x]);
-      }
+  for (int y = 0; y < 16; ++y) {
+    for (int x = 0; x < 16; ++x) {
+      int block = (y / 8) * 2 + x / 8;
+      int index = block * 64 + (y % 8) * 8 + x % 8;
+      ASR_WS2812_2.pixel_set_color(index, r[y][x], g[y][x], b[y][x]);
     }
   }
   ASR_WS2812_2.pixel_show();
@@ -571,7 +538,7 @@ void displayPattern(const uint16_t pattern[16], uint8_t r, uint8_t g, uint8_t b)
 
 void displaySpeaking1Animation() 
 {
-  uint8_t frameDelay[] = {100, 500, 500, 500}; // 各帧持续时间（毫秒）
+  uint16_t frameDelay[] = {100, 500, 500, 500}; // 各帧持续时间（毫秒）
   
   for (int i = 0; i < 4; i++) {
     displayPattern(wake_frames[i], 0, 255, 0); // 绿色显示
@@ -581,7 +548,7 @@ void displaySpeaking1Animation()
 
 void displaySpeaking2Animation() 
 {
-  uint8_t frameDelay[] = {100, 500, 500, 300, 500, 500, 500, 500, 300} ;// 各帧持续时间（毫秒）
+  uint16_t frameDelay[] = {100, 500, 500, 300, 500, 500, 500, 500, 300} ;// 各帧持续时间（毫秒）
   
   for (int i = 0; i < 9; i++) {
     displayPattern(answer_frames[i], 0, 255, 0); // 绿色显示
@@ -591,7 +558,7 @@ void displaySpeaking2Animation()
 
 void displaycryAnimation() 
 {
-  uint8_t frameDelay[] = {500, 500, 500, 500}; // 各帧持续时间（毫秒）
+  uint16_t frameDelay[] = {500, 500, 500, 500}; // 各帧持续时间（毫秒）
   
   for (int i = 0; i < 4; i++) {
     displayPattern(cry_frames[i], 0, 0, 255); // 蓝色显示

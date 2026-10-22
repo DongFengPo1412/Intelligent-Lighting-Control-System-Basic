@@ -80,3 +80,9 @@ Basic 的实际边界包括预设词条和回复、程序内固定亮度设置�
 [技术说明](docs/technical-notes.zh-CN.md) · [烧录与操作](docs/setup.zh-CN.md) · [Mid](https://github.com/DongFengPo1412/Intelligent-Lighting-Control-System-Mid) · [Pro](https://github.com/DongFengPo1412/Intelligent-Lighting-Control-System-Pro)
 
 本仓库应用代码采用 [MIT 许可证](LICENSE)。天问 Block、ASRPRO SDK、第三方硬件资料及音频／图案资源分别遵循其来源的授权条件。
+
+## 维护修订与验证
+
+2026-10 维护版将主C++与表情 `.hd` 的帧延时改为 `uint16_t`，RGB访问改为零起点并保留四块面板顺序。贪吃蛇改用有限的空格枚举，满盘时结束并输出串口得分；增长不会写入第256号下标。串口仅原子发布启动请求和最新方向，游戏任务独占状态，并在每步相对已提交方向拒绝反向；这是单槽最新值，不是命令FIFO。
+
+7组离线用例从真实 `.hd` 提取函数，经Clang/WebAssembly执行，覆盖像素唯一映射、RGB边界、单空格/满盘、满容量增长及快速转向，另编译原始延时声明。未构建完整天问SDK、烧录或重测实机。目标工具链需支持GCC/Clang `__atomic` 内建；供应商SDK及任务栈仍需验证。

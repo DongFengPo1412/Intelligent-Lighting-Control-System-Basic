@@ -76,14 +76,16 @@ The SDK manual describes a default 15-second no-command timeout, subject to tool
 | Symptom | Check first |
 | :--- | :--- |
 | Command unrecognized | Project version, wake state, command ID, and whether matching resources/application were flashed. |
-| Narrowing error in delays | `uint8_t` cannot hold 300/500; use an appropriate type in a corrected revision and revalidate timing. |
-| RGB artwork displaced/corrupt | 1–16 out-of-bounds access, linear/block mapping differences, and physical panel orientation. |
+| Timing/display problem | Check revision, SDK, linear/block mapping and panel orientation; frame delays now use 16 bits. |
+| Timing/display problem | Check revision, SDK, linear/block mapping and panel orientation; frame delays now use 16 bits. |
 | BLE connected but no control | Transparent-UART setup, baud rate, TX/RX, character case, and actual firmware. |
 | on/off does nothing | Wrong game firmware or extra newline/payload characters. |
 | Animation/music cannot exit | Long loops and blocking delays; AEC capability does not replace application exit logic. |
 | No LED numeric score | Archived code only prints serial; matching digit bitmaps/demo logic are missing. |
-| Full-board/rapid-turn issue | Food-generation exit, multiple direction changes per step, and shared state. |
+| Full board/rapid input | Check latest-slot policy and target atomic support; a FIFO would be needed to preserve every keypress. |
 
 No fully reproduction-tested unified release is claimed. Any code additions/fixes should be committed separately, with build environment recorded before hardware tests.
 
 [Technical notes](technical-notes.en.md) · [Project overview](../README_EN.md)
+
+Seven offline cases execute functions extracted from the real .hd source with Clang/WebAssembly: unique pixel mapping, RGB bounds, one/free-no-cell cases, growth to capacity and rapid turns; source delay declarations are also compiled. The complete Tianwen SDK was not built or flashed and hardware was not retested. The target compiler must support GCC/Clang `__atomic` builtins; vendor SDK and task stack behavior remain unverified.

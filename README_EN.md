@@ -80,3 +80,9 @@ Next documentation/engineering steps are to recover the combined demonstration v
 [Technical notes](docs/technical-notes.en.md) · [Setup and operation](docs/setup.en.md) · [Mid](https://github.com/DongFengPo1412/Intelligent-Lighting-Control-System-Mid) · [Pro](https://github.com/DongFengPo1412/Intelligent-Lighting-Control-System-Pro)
 
 Application code in this repository is under the [MIT License](LICENSE). Tianwen Block, the ASRPRO SDK, third-party hardware documents, and audio/image resources retain their respective licensing terms.
+
+## Maintenance and validation
+
+The 2026-10 revision uses `uint16_t` frame delays in the main C++ and expression .hd files, and zero-based RGB indexing with the original four-panel order. Snake uses bounded free-cell enumeration, ends with serial scoring on a full board, and never appends at array index 256. UART only publishes atomic start/latest-direction requests; the game task owns state and rejects reversal relative to the last committed direction once per tick. This is a latest-value slot, not a command FIFO.
+
+Seven offline cases execute functions extracted from the real .hd source with Clang/WebAssembly: unique pixel mapping, RGB bounds, one/free-no-cell cases, growth to capacity and rapid turns; source delay declarations are also compiled. The complete Tianwen SDK was not built or flashed and hardware was not retested. The target compiler must support GCC/Clang `__atomic` builtins; vendor SDK and task stack behavior remain unverified.
