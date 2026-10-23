@@ -77,7 +77,6 @@ The SDK manual describes a default 15-second no-command timeout, subject to tool
 | :--- | :--- |
 | Command unrecognized | Project version, wake state, command ID, and whether matching resources/application were flashed. |
 | Timing/display problem | Check revision, SDK, linear/block mapping and panel orientation; frame delays now use 16 bits. |
-| Timing/display problem | Check revision, SDK, linear/block mapping and panel orientation; frame delays now use 16 bits. |
 | BLE connected but no control | Transparent-UART setup, baud rate, TX/RX, character case, and actual firmware. |
 | on/off does nothing | Wrong game firmware or extra newline/payload characters. |
 | Animation/music cannot exit | Long loops and blocking delays; AEC capability does not replace application exit logic. |
