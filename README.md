@@ -1,88 +1,88 @@
 # Intelligent Lighting Control System — Basic
 
-基于 ASRPRO 离线语音、16×16 WS2812B 点阵与 HM-10 蓝牙的灯光交互原型。
+A lighting interaction prototype using ASRPRO offline speech, a 16×16 WS2812B matrix, and HM-10 Bluetooth.
 
-**简体中文** · [English](README_EN.md) · [日本語](README_JA.md)
+[简体中文](README_ZH.md) · **English** · [日本語](README_JA.md)
 
-**深入阅读：** [功能与源码](docs/technical-notes.zh-CN.md#source-map) · [图形与游戏算法](docs/technical-notes.zh-CN.md#graphics) · [实现范围](docs/technical-notes.zh-CN.md#implementation-status) · [烧录与操作](docs/setup.zh-CN.md)
+**Explore:** [Features and source](docs/technical-notes.en.md#source-map) · [Graphics and algorithms](docs/technical-notes.en.md#graphics) · [Implementation scope](docs/technical-notes.en.md#implementation-status) · [Setup and operation](docs/setup.en.md)
 
-本项目源自电子科技大学《综合课程设计（初阶）》，在同一套灯板平台上探索预设语音命令、灯效与表情展示、音乐片段配合随机灯效，以及手机控制的贪吃蛇游戏。开发结合天问 Block 图形化配置与 C/C++ 应用编程。
+Developed for UESTC's introductory comprehensive curriculum design course, Basic explores preset speech commands, lighting and facial patterns, music clips accompanied by random light effects, and a phone-controlled Snake game on a shared LED platform. Development combines Tianwen Block configuration with C/C++ application programming.
 
-这是 **Basic → Mid → Pro** 三阶段项目的初阶：Basic 建立离线命令、点阵显示及串口交互基础，后续阶段见 [Mid](https://github.com/DongFengPo1412/Intelligent-Lighting-Control-System-Mid) 与 [Pro](https://github.com/DongFengPo1412/Intelligent-Lighting-Control-System-Pro)。
+This is the first stage of **Basic → Mid → Pro**. Basic establishes offline commands, matrix display, and serial interaction. See [Mid](https://github.com/DongFengPo1412/Intelligent-Lighting-Control-System-Mid) and [Pro](https://github.com/DongFengPo1412/Intelligent-Lighting-Control-System-Pro) for later stages.
 
-![Basic 实机交互片段](docs/images/demo_hardware_live_interaction.gif)
+![Basic physical interaction clip](docs/images/demo_hardware_live_interaction.gif)
 
-[观看课程项目演示视频](https://www.bilibili.com/video/BV1Y5N4zxEPX)。仓库保留各功能的开发工程，所选文件的功能范围与演示版本对应关系见[版本说明](docs/technical-notes.zh-CN.md#implementation-status)。
+[Watch the course demonstration](https://www.bilibili.com/video/BV1Y5N4zxEPX). The repository preserves development projects for individual features. See [version scope](docs/technical-notes.en.md#implementation-status) for each file's coverage and its relation to the demonstration.
 
-## 硬件与交互结构
+## Hardware and interaction paths
 
-样机采用 ASRPRO v2.0 开发板、麦克风与外接扬声器，四块 8×8 WS2812B 点阵拼成 16×16、共 256 颗 LED。HM-10 经 UART 与主控通信，手机使用 Blinker 按钮发送控制字符。
+The prototype uses an ASRPRO v2.0 board, microphone, and external speaker. Four 8×8 WS2812B panels form a 16×16 matrix with 256 LEDs. An HM-10 communicates with the controller over UART, and phone buttons in Blinker send control characters.
 
-系统由电脑 USB 供电。主控和连线放入购入的木质收纳盒，灯板位于透明盖板下，并为 USB 线加工了出线缺口。具体模块电源、信号电平及连接方法见[操作指南](docs/setup.zh-CN.md#hardware)。
+Power comes from a computer USB port. Electronics sit inside a purchased wooden storage box, with the panels beneath a transparent lid and a cutout for the USB cable. Module supplies, signal levels, and connections are covered in the [setup guide](docs/setup.en.md#hardware).
 
 ```mermaid
 flowchart LR
-    Voice[预设语音命令] --> ASR[ASRPRO 识别事件]
-    ASR --> Effects[灯效与表情处理]
-    Phone[手机 Blinker] --> BLE[HM-10 UART 透传]
-    BLE --> Game[贪吃蛇控制]
-    Effects --> Matrix[16x16 WS2812B 点阵]
+    Voice[Preset speech commands] --> ASR[ASRPRO recognition events]
+    ASR --> Effects[Lighting and expressions]
+    Phone[Phone Blinker app] --> BLE[HM-10 UART bridge]
+    BLE --> Game[Snake controls]
+    Effects --> Matrix[16x16 WS2812B matrix]
     Game --> Matrix
-    ASR --> Audio[预设回复音频与扬声器]
+    ASR --> Audio[Preset reply audio and speaker]
 ```
 
-图示概括各功能的输入输出关系，不表示全部归档程序已合并或并发运行。语音功能在设备运行时离线，不需要先连接手机；蓝牙配对是手机控制路径的前提。
+The diagram summarizes feature inputs and outputs; it does not assert that all archived programs are merged or concurrent. Speech operates offline on the device and does not require a phone connection. Bluetooth pairing is required for the phone-control path.
 
-## 功能与实现方式
+## Features and implementation
 
-| 功能 | 实现方式 | 对应资料 |
+| Feature | Implementation | Evidence |
 | :--- | :--- | :--- |
-| **离线语音交互** | 配置唤醒词、命令词与固定回复，经工具生成资源、编译下载后触发指定事件。 | 各 `.hd` 的词条与 `ASR_CODE`；运行时不接入大模型。 |
-| **语音控制灯效** | 用图形积木绑定红、绿、蓝及彩虹、呼吸、流水等 SDK 灯效。 | `功能二.hd`、`功能2.hd`。 |
-| **音乐与随机灯光** | 团队将音乐片段替换为预设回复音频；灯柱高度与颜色由随机数生成。 | `功能三.hd`；没有音频频谱、响度或节拍分析。 |
-| **表情与像素图案** | 自编二值点阵、预设帧动画及 RGB 图案，实现笑脸、哭脸、四色表情轮播与像素角色。 | `最终版本.hd`；RGB 角色为静态图案。 |
-| **蓝牙贪吃蛇** | `E` 启动，`W/S/A/D` 控制方向；实现穿墙、食物避让、碰撞及计分。 | `贪吃蛇.hd`；归档版将分数输出到串口。 |
+| **Offline speech** | Configure wake words, commands, and fixed replies, then generate resources, build, and flash to dispatch events. | Vocabulary and `ASR_CODE` in the projects; no runtime LLM connection. |
+| **Voice-controlled lighting** | Graphical blocks bind red/green/blue, rainbow, breathing, and flowing effects supplied by the SDK. | `功能二.hd` and `功能2.hd`. |
+| **Music with random lights** | The team replaced a reply audio asset with a fixed music clip; random numbers choose bar heights and colors. | `功能三.hd`; no spectrum, loudness, or beat analysis. |
+| **Expressions and pixel art** | Custom binary patterns, frame sequences, and RGB data provide smiles, crying, four-color expression cycles, and a pixel character. | `最终版本.hd`; the RGB character is a static image. |
+| **Bluetooth Snake** | `E` starts; `W/S/A/D` change direction. Includes boundary wrapping, food exclusion, collision, and scoring. | `贪吃蛇.hd`; the archived version prints scores to serial. |
 
-根据团队演示回忆，游戏还支持语音启动及灯板数字计分；这两项尚未在已归档游戏代码中找到对应实现，复现前需补齐演示版本。[功能与版本对应](docs/technical-notes.zh-CN.md#source-map)
+The team also recalls voice-start and numeric scores on the LED matrix during the demonstration. Those paths have not been located in the archived game code; reproducing them requires the demonstration version. [Feature/version mapping](docs/technical-notes.en.md#source-map)
 
-## 主要工程设计
+## Engineering design
 
-- **配置与应用分工：** 语音资源和常用灯效由天问 Block／SDK 提供；团队编写事件绑定、表情位图、游戏逻辑及串口交互。
-- **低分辨率图形：** 用 16 行位掩码存储二值图案，单帧 32 字节；RGB 三通道图案占 768 字节。分块映射将逻辑交点转换为四块 8×8 面板的灯珠索引。
-- **输入与游戏更新分离：** 贪吃蛇使用 UART 接收任务和游戏更新任务，接收循环延时 2 ms、游戏循环延时 300 ms。该设计使输入接收不必等到每次游戏更新，但不等于已测得 2 ms 端到端延迟。
-- **可见交互反馈：** 用表情切换、蛇头／蛇身／食物配色、自碰撞三次红闪与计分反馈展示状态。
+- **Configuration and application work:** Tianwen Block/the SDK provide speech resources and standard effects. Team application work includes event binding, expression bitmaps, game logic, and serial interaction.
+- **Compact graphics:** sixteen row masks store a binary frame in 32 bytes; three RGB planes occupy 768 bytes. Block mapping translates logical coordinates into indices across four 8×8 panels.
+- **Separate input and game updates:** Snake uses UART reception and game-update tasks, with 2 ms and 300 ms loop delays respectively. Input reception need not wait for each game update; this does not establish a measured 2 ms end-to-end response.
+- **Visible state feedback:** expression changes, distinct head/body/food colors, three red flashes after self-collision, and scoring make interaction state visible.
 
-[算法、公式与设计取舍](docs/technical-notes.zh-CN.md#graphics) · [游戏与串口机制](docs/technical-notes.zh-CN.md#game)
+[Algorithms, equations, and tradeoffs](docs/technical-notes.en.md#graphics) · [Game and serial logic](docs/technical-notes.en.md#game)
 
-## 实物展示与验证范围
+## Physical examples and validation scope
 
-| 灯效实拍 | 表情点阵实拍 |
+| Lighting photograph | Matrix expression photograph |
 | :---: | :---: |
-| ![木盒灯板彩虹灯效](docs/images/demo_hardware_wood_case.jpg) | ![点阵表情显示](docs/images/demo_led_matrix_smile_face.jpg) |
+| ![Rainbow lighting in the wooden enclosure](docs/images/demo_hardware_wood_case.jpg) | ![Physical matrix expression](docs/images/demo_led_matrix_smile_face.jpg) |
 
-项目完成了课程功能演示，团队反馈常规展示时可稳定操作；没有进行受控的识别率、延迟、通信距离、电流或长期运行评测，因此本页不提供此类量化成绩。
+The project completed a course demonstration, with the team reporting stable operation during normal presentation. No controlled recognition, latency, range, current, or endurance benchmark was recorded, so no such numerical performance is claimed.
 
-Basic 的实际边界包括预设词条和回复、程序内固定亮度设置、近距离蓝牙通信，以及不分析音频的随机灯效。归档源码的编译／索引问题和版本差异集中列于[技术说明](docs/technical-notes.zh-CN.md#implementation-status)。
+Basic uses preset vocabulary/replies, brightness values fixed in the programs, short-range Bluetooth, and random effects without audio analysis. Compilation/indexing issues and differences between archived versions are collected in the [technical notes](docs/technical-notes.en.md#implementation-status).
 
-## 快速开始
+## Quick start
 
-1. 安装天问 Block 的 ASRPRO 开发环境及对应 USB 串口驱动。
-2. 按需要选择[具体功能工程](docs/setup.zh-CN.md#programs)，核对灯珠数量、引脚、词条与串口配置。
-3. 生成或准备语音资源，完成编译后下载到实际板卡；需要音乐演示时另配回复音频。
-4. 按[分程序操作指南](docs/setup.zh-CN.md#operation)测试；编译前先核对该版本的已知问题。
+1. Install Tianwen Block with ASRPRO support and the matching USB serial driver.
+2. Choose a [feature project](docs/setup.en.md#programs) and check LED count, pins, vocabulary, and serial settings.
+3. Generate or prepare voice resources, build, and flash for the actual board. Supply the reply audio separately for the music demonstration.
+4. Follow the [per-program instructions](docs/setup.en.md#operation), reviewing that version's known issues before building.
 
-## 团队、演进与许可
+## Team, development, and license
 
-本页介绍团队课程成果，仓库由 **刘超然 / Chaoran Liu** 维护。成员名单与具体模块分工待核对后补充；本页暂不认定某个模块由个人独立完成。
+This page describes a team course project. **Chaoran Liu / 刘超然** maintains the repository. The member list and module responsibilities await confirmation; no module is currently attributed as an individual's sole work.
 
-后续整理重点是找回统一演示版本、明确模式退出与游戏计分路径、修正归档代码问题，并补充实际测试记录。Basic 的固定命令与随机灯效也为后续阶段的交互与音频处理升级提供了问题背景。
+Next documentation/engineering steps are to recover the combined demonstration version, establish mode exit and score-display paths, resolve archived code issues, and add test records. Fixed commands and simulated music effects provide the problem context for later interaction and audio-processing work.
 
-[技术说明](docs/technical-notes.zh-CN.md) · [烧录与操作](docs/setup.zh-CN.md) · [Mid](https://github.com/DongFengPo1412/Intelligent-Lighting-Control-System-Mid) · [Pro](https://github.com/DongFengPo1412/Intelligent-Lighting-Control-System-Pro)
+[Technical notes](docs/technical-notes.en.md) · [Setup and operation](docs/setup.en.md) · [Mid](https://github.com/DongFengPo1412/Intelligent-Lighting-Control-System-Mid) · [Pro](https://github.com/DongFengPo1412/Intelligent-Lighting-Control-System-Pro)
 
-本仓库应用代码采用 [MIT 许可证](LICENSE)。天问 Block、ASRPRO SDK、第三方硬件资料及音频／图案资源分别遵循其来源的授权条件。
+Application code in this repository is under the [MIT License](LICENSE). Tianwen Block, the ASRPRO SDK, third-party hardware documents, and audio/image resources retain their respective licensing terms.
 
-## 维护修订与验证
+## Maintenance and validation
 
-2026-10 维护版将主C++与表情 `.hd` 的帧延时改为 `uint16_t`，RGB访问改为零起点并保留四块面板顺序。贪吃蛇改用有限的空格枚举，满盘时结束并输出串口得分；增长不会写入第256号下标。串口仅原子发布启动请求和最新方向，游戏任务独占状态，并在每步相对已提交方向拒绝反向；这是单槽最新值，不是命令FIFO。
+The 2026-10 revision uses `uint16_t` frame delays in the main C++ and expression .hd files, and zero-based RGB indexing with the original four-panel order. Snake uses bounded free-cell enumeration, ends with serial scoring on a full board, and never appends at array index 256. UART only publishes atomic start/latest-direction requests; the game task owns state and rejects reversal relative to the last committed direction once per tick. This is a latest-value slot, not a command FIFO.
 
-7组离线用例从真实 `.hd` 提取函数，经Clang/WebAssembly执行，覆盖像素唯一映射、RGB边界、单空格/满盘、满容量增长及快速转向，另编译原始延时声明。未构建完整天问SDK、烧录或重测实机。目标工具链需支持GCC/Clang `__atomic` 内建；供应商SDK及任务栈仍需验证。
+Seven offline cases execute functions extracted from the real .hd source with Clang/WebAssembly: unique pixel mapping, RGB bounds, one/free-no-cell cases, growth to capacity and rapid turns; source delay declarations are also compiled. The complete Tianwen SDK was not built or flashed and hardware was not retested. The target compiler must support GCC/Clang `__atomic` builtins; vendor SDK and task stack behavior remain unverified.

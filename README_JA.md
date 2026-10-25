@@ -2,7 +2,7 @@
 
 ASRPROのオフライン音声認識、16×16 WS2812Bマトリックス、HM-10 Bluetoothを使った光の対話試作機です。
 
-[简体中文](README.md) · [English](README_EN.md) · **日本語**
+[简体中文](README_ZH.md) · [English](README.md) · **日本語**
 
 **詳細：** [機能とソース](docs/technical-notes.ja.md#source-map) · [描画とアルゴリズム](docs/technical-notes.ja.md#graphics) · [実装範囲](docs/technical-notes.ja.md#implementation-status) · [導入と操作](docs/setup.ja.md)
 
